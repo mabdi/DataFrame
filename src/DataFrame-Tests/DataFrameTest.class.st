@@ -501,6 +501,13 @@ DataFrameTest >> testColumnAtTransform [
 ]
 
 { #category : #tests }
+DataFrameTest >> testColumnFromToPutSizeMismatch [
+	self
+		should: [ df columnsFrom: 3 to: 2 put: #(#(1 1 1 1 1) #(2 2 2 2 2)) ]
+		raise: SizeMismatch
+]
+
+{ #category : #tests }
 DataFrameTest >> testColumnIfAbsent [
 
 	| exceptionBlockEvaluated |
@@ -786,6 +793,14 @@ DataFrameTest >> testColumnsFromToPut [
 	
 	dataFrame columnsFrom: 3 to: 2 put: newColumns.
 	self assert: dataFrame equals: expected.
+]
+
+{ #category : #tests }
+DataFrameTest >> testColumnsFromToPutSizeMismatch [
+	
+	self
+		should: [ df columnsFrom: 3 to: 2 put: #(#(1 1 1 1 1) #(2 2 2 2 2)) ]
+		raise: SizeMismatch
 ]
 
 { #category : #tests }
@@ -1348,6 +1363,27 @@ DataFrameTest >> testFindAllIndicesOfAtColumnFloat [
 
 	df addRow: #(Dubai 2.789 true) named: #D.
 	self assert: (df findAllIndicesOf: 2.789 atColumn: 'Population') equals: #(2 4) asOrderedCollection.
+]
+
+{ #category : #'find-select' }
+DataFrameTest >> testHeadAndTail [
+	"I test correctness of: 
+
+- `^ 5` in method: `DataFrame >> #defaultHeadTailSize`
+
+- `^ self rowsAt: (1 to: n)` in method: `DataFrame >> #head:`
+
+- `^ self rowsAt: (rows - n + 1 to: rows)` in method: `DataFrame >> #tail:`
+
+- `(rows - n)` in method: `DataFrame >> #tail:` when {#rows->3. #n->3}
+
+"
+
+	self
+		assert: df defaultHeadTailSize equals: 5;
+		assert: df head class equals: DataFrame;
+		assert: df head tail class equals: DataFrame;
+		assert: df tail numberOfRows equals: 3
 ]
 
 { #category : #tests }
@@ -2378,6 +2414,24 @@ DataFrameTest >> testLeftJoinSameColumnNames [
 	self assert: (df leftJoin: df2) equals: expected.
 ]
 
+{ #category : #tests }
+DataFrameTest >> testMode [
+	"I test correctness of: 
+
+- `^ series` in method: `DataFrame >> #applyToAllColumns:` when {#series->nil}
+
+It looks redundant.
+mode is tested in other class DataFrameStatsTest.
+It seems that the developers has splited the tests for DataFrame class to different test classes.
+
+"
+
+	<madeBySmallAmp>
+	| aCollection |
+	aCollection := df mode.
+	self assert: aCollection class equals: DataSeries
+]
+
 { #category : #splitjoin }
 DataFrameTest >> testOuterJoin [
 	| df2 expected |
@@ -2868,6 +2922,12 @@ DataFrameTest >> testPrintOn [
 	actual := actual contents.
 	
 	self assert: actual equals: expected.
+]
+
+{ #category : #'find-select' }
+DataFrameTest >> testRangeError [
+	df addRow: #(Dubai 2.789 true) named: #D.
+	self should: [ df range ] raise: MessageNotUnderstood "Instance of Character did not understand #Barcelona"
 ]
 
 { #category : #tests }
@@ -4241,6 +4301,23 @@ DataFrameTest >> testSortDescendingBy [
 	self assert: actual equals: expected.
 ]
 
+{ #category : #test }
+DataFrameTest >> testTail [
+	df := DataFrame withRows: #(
+		('K0' 'A0' 0)
+		('K1' 'A1' 1)
+		('K1' 'A2' 2)
+		('K2' 'A3' 3)
+		('K0' 'A4' 4)
+		('K5' 'A5' 5)
+		('K6' 'A6' 6)
+		)
+		rowNames: #('1K0' '1K1' '2K1' '1K2' '2K0' '1K5' '1K6')
+		columnNames: #(Key A B).
+	
+	self assert: df tail numberOfRows equals: df defaultHeadTailSize.
+]
+
 { #category : #tests }
 DataFrameTest >> testToColumnApplyElementwise [
 
@@ -4519,6 +4596,16 @@ DataFrameTest >> testWithRowsColumnNames [
 ]
 
 { #category : #tests }
+DataFrameTest >> testWithRowsColumnNamesSizeMismatch [
+	self
+		should: [ DataFrame
+				withRows:
+					#(#('K0' 'A0' 0 'B6' false) #('K1' 'A1' 1 'B3' true) #('K1' 'A2' 2 'B3' true) #('K2' 'A3' 3 'B1' true) #('K2' 'A3' 3 'B2' false) #('K0' 'A4' 4 'B6' false) #('K5' 'A5' 5 nil nil) #('K6' 'A6' 6 nil nil) #('K3' nil nil 'B0' false) #('K3' nil nil 'B4' false) #('K3' nil nil 'B5' true nil))
+				columnNames: #(Key A B C D) ]
+		raise: SizeMismatch
+]
+
+{ #category : #tests }
 DataFrameTest >> testWithRowsColumnNames_emptyRows [
 	| dataframe |
 	dataframe := DataFrame
@@ -4546,6 +4633,17 @@ DataFrameTest >> testWithRowsRowNamesColumnNames [
 	self assert: ((dataframe column: 'one') at: '2') equals: 4.
 	self assert: ((dataframe column: 'two') at: '2') equals: 5.
 	self assert: ((dataframe column: 'three') at: '2') equals: 6
+]
+
+{ #category : #tests }
+DataFrameTest >> testWithRowsRowNamesColumnNamesSizeMismatch [
+	self
+		should: [ DataFrame
+				withRows:
+					#(#('K3' 'B0' false) #('K2' 'B1' true) #('K2' 'B2' false) #('K1' 'B3' true) #('K3' 'B4' false) #('K3' 'B5' true) #('K0' 'B6' false))
+				rowNames: #('1K3' '1K2' '2K2' '1K1' '2K3' '3K3' '1K0')
+				columnNames: #(#Key #C #D nil) ]
+		raise: SizeMismatch
 ]
 
 { #category : #tests }
