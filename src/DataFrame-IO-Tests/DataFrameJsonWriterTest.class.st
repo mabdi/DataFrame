@@ -33,6 +33,15 @@ DataFrameJsonWriterTest >> setUp [
 ]
 
 { #category : #tests }
+DataFrameJsonWriterTest >> testInitialState [
+	| aDataFrameJsonWriter |
+	aDataFrameJsonWriter := DataFrameJsonWriter new.
+	self
+		assert: aDataFrameJsonWriter orient equals: 'records';
+		deny: aDataFrameJsonWriter pretty
+]
+
+{ #category : #tests }
 DataFrameJsonWriterTest >> testWriteAsString [
 	| actual expected |.
 	actual := DataFrameJsonWriter new writeAsString: df.
@@ -50,6 +59,14 @@ DataFrameJsonWriterTest >> testWriteTo [
 	expected := '' join: (TestJsonStrings recordsJsonString 
 		regex: '[^\s]+' matchesCollect: [:x|x]).
 	self assert: actual lines equals: expected lines.
+]
+
+{ #category : #tests }
+DataFrameJsonWriterTest >> testWriteToDirectory [
+	| file aDataFrameJsonWriter |
+	file := directory.
+	aDataFrameJsonWriter := DataFrameJsonWriter new.
+	self should: [ aDataFrameJsonWriter write: df to: file ] raise: MessageNotUnderstood 
 ]
 
 { #category : #tests }
