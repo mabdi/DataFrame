@@ -237,16 +237,16 @@ DataFrameInternalTest >> testDeepCopy [
 { #category : #tests }
 DataFrameInternalTest >> testDo [
 
-	| dfInternal sum |
+	| dfInternal sum returnValue |
 	
 	dfInternal := DataFrameInternal withRows:
 		#((1 2)(3 4)(5 6)).
 		
 	sum := 0.
 	
-	dfInternal do: [ :each |
+	returnValue := dfInternal do: [ :each |
 		sum := sum + each ].
-	
+	self assert: returnValue class equals: Array2D.
 	self assert: sum equals: 21.
 ]
 
@@ -485,13 +485,14 @@ DataFrameInternalTest >> testWithIndicesCollect [
 { #category : #tests }
 DataFrameInternalTest >> testWithIndicesDo [
 
-	| dfInternal |
+	| dfInternal returnValue |
 	
 	dfInternal := DataFrameInternal withRows:
 		#((1 2)(3 4)(5 6)).
 		
-	dfInternal withIndicesDo: [ :each :i :j |
+	returnValue := dfInternal withIndicesDo: [ :each :i :j |
 		self assert: each equals: ((i - 1) * 2 + j) ].
+	self assert: returnValue class equals: Array2D 
 ]
 
 { #category : #tests }
