@@ -71,6 +71,15 @@ DataFrameJsonReaderTest >> sortByRowColNames: inputDf [
 ]
 
 { #category : #tests }
+DataFrameJsonReaderTest >> testInitialState [
+	| output |
+	output := DataFrameJsonReader new.
+	self
+		assert: output orient equals: 'auto';
+		deny: output uniform 
+]
+
+{ #category : #tests }
 DataFrameJsonReaderTest >> testReadFrom [
 	| output |
 
@@ -109,6 +118,14 @@ DataFrameJsonReaderTest >> testReadFromJsonOrient [
 	| output |
 	output := DataFrame readFromJson: (directory / 'split.json') orient: 'split'.
 	self assert: (self sortByRowColNames: output) equals: dfWithRowColNames.
+]
+
+{ #category : #tests }
+DataFrameJsonReaderTest >> testReadFromNonExistingJson [
+	
+	self
+		should: [ DataFrameJsonReader new readFrom: directory / 'does_not_exists.json' ]
+			raise: FileDoesNotExistException
 ]
 
 { #category : #tests }
