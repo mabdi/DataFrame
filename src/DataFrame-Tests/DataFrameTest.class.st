@@ -2926,8 +2926,7 @@ DataFrameTest >> testPrintOn [
 
 { #category : #'find-select' }
 DataFrameTest >> testRangeError [
-	df addRow: #(Dubai 2.789 true) named: #D.
-	self should: [ df range ] raise: MessageNotUnderstood "Instance of Character did not understand #Barcelona"
+	self should: [ df range ] raise: MessageNotUnderstood	"Instance of Character did not understand #Barcelona"
 ]
 
 { #category : #tests }
