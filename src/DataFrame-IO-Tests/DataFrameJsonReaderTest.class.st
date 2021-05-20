@@ -146,3 +146,25 @@ DataFrameJsonReaderTest >> testReadFromValues [
 	
 	self assert: (self sortByRowColNames: output) equals: df.
 ]
+
+{ #category : #'as yet unclassified' }
+DataFrameJsonReaderTest >> testReadFrom_amp [
+	"I test correctness of: 
+
+- `^ orient` in method: `DataFrameJsonReader >> #orient` when {#orient->'auto'}
+
+- `^ uniform` in method: `DataFrameJsonReader >> #uniform` when {#uniform->false}
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrameJsonReader#orient#9#16'>
+	<madeBySmallAmp>
+	| output aDataFrameJsonReader |
+	aDataFrameJsonReader := DataFrameJsonReader new.
+	self
+		assert:
+			aDataFrameJsonReader orient equals: 'auto';
+		deny:
+			aDataFrameJsonReader uniform.
+	output := aDataFrameJsonReader readFrom: directory / 'nonNull1.json'
+]
