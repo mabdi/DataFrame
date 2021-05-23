@@ -31,6 +31,56 @@ DataSeriesTest >> testArithmeticsAddArrayToSeries [
 	self assert: actual equals: expected.
 ]
 
+{ #category : #'as yet unclassified' }
+DataSeriesTest >> testArithmeticsAddArrayToSeries_amp_R1_A132_A214 [
+	<smallAmpCoveres: 'ReplaceLessOrEqualWithGreaterMutantOperator#DataSeries#sort#28#33'>
+	<smallAmpCoveres: 'ReplaceLessOrEqualWithEqualMutantOperator#DataSeries#sort#28#33'>
+	<madeBySmallAmp>
+	| series array actual expected |
+	series := DataSeries withKeys: #(a b c) values: #(1 2 3) name: #X.
+	expected := DataSeries withKeys: #(a b c) values: #(4 6 8) name: #X.
+	expected
+		first;
+		sort.
+	self should: [ actual := series + array ] raise: MessageNotUnderstood
+]
+
+{ #category : #'as yet unclassified' }
+DataSeriesTest >> testArithmeticsAddArrayToSeries_amp_T49 [
+	<smallAmpCoveres: 'RemoveCaretOperator#DataSeries#fifth#103#119'>
+	<smallAmpCoveres: 'RemoveCaretOperator#DataSeries#ninth#103#119'>
+	<smallAmpCoveres: 'RemoveCaretOperator#DataSeries#eighth#105#121'>
+	<smallAmpCoveres: 'RemoveCaretOperator#DataSeries#seventh#107#123'>
+	<smallAmpCoveres: 'RemoveCaretOperator#DataSeries#sixth#103#119'>
+	<smallAmpCoveres: 'RemoveCaretOperator#DataSeries#fourth#105#121'>
+	<smallAmpCoveres:
+		'ReplaceEqualWithNotEqualOperator#DataSeries#groupBy:aggregateUsing:as:#500#530'>
+	<madeBySmallAmp>
+	| series array actual expected |
+	series := DataSeries
+		withKeys: keyArray
+		values: #(3 7 6 20 8 9 8 10 15 13 16)
+		name: 'ExampleSeries'.
+	array := #(3 4 5).
+	expected := DataSeries withKeys: #(a b c) values: #(4 6 8) name: #X.
+	self should: [ actual := series + array ] raise: SizeMismatch
+]
+
+{ #category : #'as yet unclassified' }
+DataSeriesTest >> testArithmeticsAddArrayToSeries_amp_U8 [
+	<smallAmpCoveres:
+		'ReplaceIfFalseReceiverWithTrueOperator#DataSeries#with:collect:#175#236'>
+	<madeBySmallAmp>
+	| series array actual expected |
+	series := DataSeries withKeys: #(#c #c #c) values: #(1 2 3) name: #c.
+	array := #(3 4 5).
+	expected := DataSeries
+		withKeys: #(#c #c #c)
+		values: #(4 6 8)
+		name: #c.
+	self should: [ actual := series + array ] raise: SizeMismatch
+]
+
 { #category : #arithmetic }
 DataSeriesTest >> testArithmeticsAddScalarToSeries [
 	| series scalar actual expected |
@@ -44,6 +94,21 @@ DataSeriesTest >> testArithmeticsAddScalarToSeries [
 	self assert: actual equals: expected.
 ]
 
+{ #category : #'as yet unclassified' }
+DataSeriesTest >> testArithmeticsAddScalarToSeries_amp_A146_A81 [
+	<smallAmpCoveres: 'RemoveCaretOperator#DataSeries#defaultPrecision#19#26'>
+	<madeBySmallAmp>
+	| series scalar actual expected |
+	(DataSeries withKeys: #(a b c) values: #(1 2 3) name: #X)
+		defaultPrecision.
+	scalar := 10.
+	expected := DataSeries
+		withKeys: #(a b c)
+		values: #(11 12 13)
+		name: #X.
+	self should: [ expected head ] raise: SubscriptOutOfBounds
+]
+
 { #category : #arithmetic }
 DataSeriesTest >> testArithmeticsAddSeriesToArray [
 	| array series actual expected |
@@ -55,6 +120,34 @@ DataSeriesTest >> testArithmeticsAddSeriesToArray [
 	actual := array + series.
 	
 	self assert: actual equals: expected.
+]
+
+{ #category : #'as yet unclassified' }
+DataSeriesTest >> testArithmeticsAddSeriesToArray_amp_L37_A153 [
+	<smallAmpCoveres:
+		'ReplaceIfFalseReceiverWithTrueOperator#DataSeries#groupBy:aggregateUsing:as:#312#374'>
+	<madeBySmallAmp>
+	| array series actual expected |
+	array := #(1 2 3).
+	expected := DataSeries
+		withKeys: #(a b c) values: #(3 4 5) name: #X;
+		withKeys: #(a b c) values: #(4 12 8) name: #X.
+	self
+		should: [ expected groupBy: DataSeries new aggregateUsing: #size ]
+		raise: SizeMismatch
+]
+
+{ #category : #'as yet unclassified' }
+DataSeriesTest >> testArithmeticsAddSeriesToArray_amp_T79_A225 [
+	<smallAmpCoveres: 'ReplaceLessOrEqualWithTrueOperator#DataSeries#sorted#34#39'>
+	<madeBySmallAmp>
+	| array series actual expected |
+	array := #(1 2 3).
+	actual := DataSeries
+		withKeys: #(a b c) values: #(3 4 5) name: #X;
+		withKeys: #(a b c) values: #(4 6 8) name: #X;
+		withKeys: #(1 2 3) values: #(true false true).
+	self should: [ actual secondQuartile ] raise: MessageNotUnderstood
 ]
 
 { #category : #arithmetic }
@@ -93,6 +186,20 @@ DataSeriesTest >> testArithmeticsAddSeriesToSeriesSameKeysAndName [
 	self assert: actual equals: expected.
 ]
 
+{ #category : #'as yet unclassified' }
+DataSeriesTest >> testArithmeticsAddSeriesToSeriesSameKeysAndName_amp_A139 [
+	<smallAmpCoveres:
+		'ReplaceDetectIfNoneFirstBlockWithAlwaysFalseBlockOperator#DataSeries#withIndexDetect:ifNone:#89#202'>
+	<madeBySmallAmp>
+	| firstSeries secondSeries actual expected |
+	secondSeries := DataSeries
+		withKeys: #(a b c) values: #(1 2 3) name: #X;
+		withKeys: #(a b c) values: #(3 4 5) name: #X.
+	self
+		should: [ secondSeries withIndexDetect: [  ] ifNone: [  ] ]
+		raise: ArgumentsCountMismatch
+]
+
 { #category : #arithmetic }
 DataSeriesTest >> testArithmeticsAddSeriesToSeriesSameKeysDifferentName [
 	| firstSeries secondSeries actual expected |
@@ -118,6 +225,17 @@ DataSeriesTest >> testArithmeticsDivideArrayBySeries [
 	self assert: array / a equals: b.
 ]
 
+{ #category : #'as yet unclassified' }
+DataSeriesTest >> testArithmeticsDivideArrayBySeries_amp_A49 [
+	<smallAmpCoveres:
+		'ReplaceIfFalseReceiverWithTrueOperator#DataSeries#groupBy:aggregateUsing:as:#312#374'>
+	<madeBySmallAmp>
+	| array a b |
+	self
+		should: [ series groupBy: DataSeries new aggregateUsing: #size ]
+		raise: SizeMismatch
+]
+
 { #category : #arithmetic }
 DataSeriesTest >> testArithmeticsDivideSeriesByArray [
 
@@ -139,6 +257,17 @@ DataSeriesTest >> testArithmeticsDivideSeriesByScalar [
 	b := #(0.5 1 1.5) asDataSeries.
 	
 	self assert: a / 2 equals: b.
+]
+
+{ #category : #'as yet unclassified' }
+DataSeriesTest >> testArithmeticsDivideSeriesByScalar_amp_L2_A12 [
+	<smallAmpCoveres:
+		'ReplaceIfFalseReceiverWithTrueOperator#DataSeries#crossTabulateWith:#39#99'>
+	<madeBySmallAmp>
+	| a b |
+	self
+		should: [ series crossTabulateWith: DataSeries new ]
+		raise: SizeMismatch
 ]
 
 { #category : #arithmetic }
@@ -187,6 +316,55 @@ DataSeriesTest >> testArithmeticsDivideSeriesBySeriesSameKeysDifferentName [
 	actual := firstSeries / secondSeries.
 	
 	self assert: actual equals: expected.
+]
+
+{ #category : #'as yet unclassified' }
+DataSeriesTest >> testArithmeticsDivideSeriesBySeriesSameKeysDifferentName_amp_A101_O3 [
+	<smallAmpCoveres: 'ReplaceLessOrEqualWithTrueOperator#DataSeries#sort#28#33'>
+	<madeBySmallAmp>
+	| firstSeries secondSeries actual expected |
+	firstSeries := DataSeries
+		withKeys: #(a b c)
+		values: #(4 5 1)
+		name: #X.
+	firstSeries sort.
+	secondSeries := DataSeries
+		withKeys: #(a b c)
+		values: #(3 1 2)
+		name: #Y.
+	expected := DataSeries
+		withKeys: #(a b c)
+		values:
+			{(3 / 5).
+			(1 / 2).
+			(3 / 3)}
+		name: #X.
+	self should: [ actual := firstSeries / secondSeries ] raise: Error
+]
+
+{ #category : #'as yet unclassified' }
+DataSeriesTest >> testArithmeticsDivideSeriesBySeriesSameKeysDifferentName_amp_A177 [
+	<smallAmpCoveres:
+		'ReplaceIfFalseReceiverWithTrueOperator#DataSeries#withSeries:collect:#258#325'>
+	<madeBySmallAmp>
+	| firstSeries secondSeries actual expected |
+	firstSeries := DataSeries
+		withKeys: #(a b c)
+		values: #(1 2 3)
+		name: #X.
+	secondSeries := DataSeries
+		withKeys: #(a b c)
+		values: #(3 4 5)
+		name: #Y.
+	secondSeries sortDescending.
+	expected := DataSeries
+		withKeys: #(a b c)
+		values:
+			{(1 / 3).
+			(1 / 2).
+			(3 / 5)}
+		name: #X.
+	self should: [ actual := firstSeries / secondSeries ] raise: Error
 ]
 
 { #category : #arithmetic }
@@ -270,6 +448,75 @@ DataSeriesTest >> testArithmeticsMultiplySeriesBySeriesSameKeysAndName [
 	self assert: actual equals: expected.
 ]
 
+{ #category : #'as yet unclassified' }
+DataSeriesTest >> testArithmeticsMultiplySeriesBySeriesSameKeysAndName_amp_A105 [
+	<smallAmpCoveres:
+		'ReplaceIfFalseReceiverWithTrueOperator#DataSeries#groupBy:aggregateUsing:as:#312#374'>
+	<madeBySmallAmp>
+	| firstSeries secondSeries actual expected |
+	firstSeries := DataSeries
+		withKeys: #(a b c)
+		values: #(1 2 3)
+		name: #X.
+	self
+		should: [ firstSeries groupBy: DataSeries new aggregateUsing: #size ]
+		raise: SizeMismatch
+]
+
+{ #category : #'as yet unclassified' }
+DataSeriesTest >> testArithmeticsMultiplySeriesBySeriesSameKeysAndName_amp_A116 [
+	<smallAmpCoveres: 'RemoveCaretOperator#DataSeries#removeAt:#17#38'>
+	<madeBySmallAmp>
+	| firstSeries secondSeries actual expected |
+	firstSeries := DataSeries
+		withKeys: #(a b c)
+		values: #(1 2 3)
+		name: #X.
+	firstSeries removeAt: #a.
+	secondSeries := DataSeries
+		withKeys: #(a b c)
+		values: #(3 4 5)
+		name: #X.
+	expected := DataSeries withKeys: #(a b c) values: #(3 8 15) name: #X.
+	self
+		should: [ actual := firstSeries * secondSeries ]
+		raise: SizeMismatch
+]
+
+{ #category : #'as yet unclassified' }
+DataSeriesTest >> testArithmeticsMultiplySeriesBySeriesSameKeysAndName_amp_A125_A113 [
+	<smallAmpCoveres: 'RemoveCaretOperator#DataSeries#sorted#9#41'>
+	<madeBySmallAmp>
+	| firstSeries secondSeries actual expected |
+	firstSeries := DataSeries
+		withKeys: #(a b c)
+		values: #(1 2 3)
+		name: #X.
+	firstSeries sorted.
+	self
+		should: [ firstSeries sortAssociations: [  ] ]
+		raise: ArgumentsCountMismatch
+]
+
+{ #category : #'as yet unclassified' }
+DataSeriesTest >> testArithmeticsMultiplySeriesBySeriesSameKeysAndName_amp_A143 [
+	<smallAmpCoveres:
+		'ReplaceIfFalseReceiverWithTrueOperator#DataSeries#withSeries:collect:#258#325'>
+	<madeBySmallAmp>
+	| firstSeries secondSeries actual expected |
+	firstSeries := DataSeries
+		withKeys: #(a b c)
+		values: #(1 2 3)
+		name: #X.
+	secondSeries := DataSeries
+		withKeys: #(a b c)
+		values: #(3 4 5)
+		name: #X.
+	secondSeries sortDescending.
+	expected := DataSeries withKeys: #(a b c) values: #(3 8 15) name: #X.
+	self should: [ actual := firstSeries * secondSeries ] raise: Error
+]
+
 { #category : #arithmetic }
 DataSeriesTest >> testArithmeticsMultiplySeriesBySeriesSameKeysDifferentName [
 	| firstSeries secondSeries actual expected |
@@ -283,6 +530,86 @@ DataSeriesTest >> testArithmeticsMultiplySeriesBySeriesSameKeysDifferentName [
 	self assert: actual equals: expected.
 ]
 
+{ #category : #'as yet unclassified' }
+DataSeriesTest >> testArithmeticsMultiplySeriesBySeriesSameKeysDifferentName_amp_A105_A37 [
+	<smallAmpCoveres: 'RemoveCaretOperator#DataSeries#sorted#9#41'>
+	<smallAmpCoveres: 'ReplaceLessOrEqualWithTrueOperator#DataSeries#sorted#34#39'>
+	<madeBySmallAmp>
+	| firstSeries secondSeries actual expected |
+	series firstQuartile.
+	firstSeries := DataSeries
+		withKeys: #(a b c)
+		values: #(1 2 3)
+		name: #X.
+	self
+		should: [ firstSeries collect: [  ] ]
+		raise: ArgumentsCountMismatch
+]
+
+{ #category : #'as yet unclassified' }
+DataSeriesTest >> testArithmeticsMultiplySeriesBySeriesSameKeysDifferentName_amp_A150 [
+	<smallAmpCoveres:
+		'ReplaceIfFalseReceiverWithTrueOperator#DataSeries#withSeries:collect:#258#325'>
+	<madeBySmallAmp>
+	| firstSeries secondSeries actual expected |
+	firstSeries := DataSeries
+		withKeys: #(a b c)
+		values: #(1 2 3)
+		name: #X.
+	secondSeries := DataSeries
+		withKeys: #(a b c)
+		values: #(3 4 5)
+		name: #Y.
+	secondSeries sortDescending.
+	expected := DataSeries withKeys: #(a b c) values: #(3 8 15) name: #X.
+	self should: [ actual := firstSeries * secondSeries ] raise: Error
+]
+
+{ #category : #'as yet unclassified' }
+DataSeriesTest >> testArithmeticsMultiplySeriesBySeriesSameKeysDifferentName_amp_A241 [
+	<smallAmpCoveres:
+		'ReplaceIfFalseReceiverWithTrueOperator#DataSeries#groupBy:aggregateUsing:as:#312#374'>
+	<madeBySmallAmp>
+	| firstSeries secondSeries actual expected |
+	firstSeries := DataSeries
+		withKeys: #(a b c)
+		values: #(1 2 3)
+		name: #X.
+	secondSeries := DataSeries
+		withKeys: #(a b c)
+		values: #(3 4 5)
+		name: #Y.
+	expected := DataSeries withKeys: #(a b c) values: #(3 8 15) name: #X.
+	actual := firstSeries * secondSeries.
+	self
+		should: [ firstSeries groupBy: DataSeries new aggregateUsing: #size ]
+		raise: SizeMismatch
+]
+
+{ #category : #'as yet unclassified' }
+DataSeriesTest >> testArithmeticsMultiplySeriesBySeriesSameKeysDifferentName_amp_T17 [
+	<smallAmpCoveres: 'RemoveCaretOperator#DataSeries#eighth#105#121'>
+	<smallAmpCoveres: 'RemoveCaretOperator#DataSeries#seventh#107#123'>
+	<smallAmpCoveres: 'RemoveCaretOperator#DataSeries#fifth#103#119'>
+	<smallAmpCoveres: 'RemoveCaretOperator#DataSeries#sixth#103#119'>
+	<smallAmpCoveres: 'RemoveCaretOperator#DataSeries#fourth#105#121'>
+	<smallAmpCoveres: 'RemoveCaretOperator#DataSeries#ninth#103#119'>
+	<madeBySmallAmp>
+	| firstSeries secondSeries actual expected |
+	firstSeries := DataSeries
+		withKeys: #(a b c d e f g h i j k)
+		values: #(3 7 6 20 8 9 8 10 15 13 16)
+		name: series name.
+	secondSeries := DataSeries
+		withKeys: #(a b c)
+		values: #(3 4 5)
+		name: #Y.
+	expected := DataSeries withKeys: #(a b c) values: #(3 8 15) name: #X.
+	self
+		should: [ actual := firstSeries * secondSeries ]
+		raise: SizeMismatch
+]
+
 { #category : #arithmetic }
 DataSeriesTest >> testArithmeticsSubtractArrayFromSeries [
 
@@ -293,6 +620,50 @@ DataSeriesTest >> testArithmeticsSubtractArrayFromSeries [
 	b := #(-1 -2 0) asDataSeries.
 	
 	self assert: a - array equals: b.
+]
+
+{ #category : #'as yet unclassified' }
+DataSeriesTest >> testArithmeticsSubtractArrayFromSeries_amp_A0 [
+	<smallAmpCoveres:
+		'ReplaceDetectIfNoneFirstBlockWithAlwaysFalseBlockOperator#DataSeries#withIndexDetect:ifNone:#89#202'>
+	<madeBySmallAmp>
+	| array a b |
+	self
+		should: [ series withIndexDetect: [  ] ifNone: [  ] ]
+		raise: ArgumentsCountMismatch
+]
+
+{ #category : #'as yet unclassified' }
+DataSeriesTest >> testArithmeticsSubtractArrayFromSeries_amp_A0_A25 [
+	<smallAmpCoveres: 'ReplaceLessOrEqualWithEqualMutantOperator#DataSeries#sort#28#33'>
+	<smallAmpCoveres: 'ReplaceLessOrEqualWithTrueOperator#DataSeries#sort#28#33'>
+	<smallAmpCoveres: 'ReplaceLessOrEqualWithGreaterMutantOperator#DataSeries#sort#28#33'>
+	<madeBySmallAmp>
+	| array a b |
+	series sort.
+	self
+		should: [ series withIndexDetect: [  ] ifNone: [  ] ]
+		raise: ArgumentsCountMismatch
+]
+
+{ #category : #'as yet unclassified' }
+DataSeriesTest >> testArithmeticsSubtractArrayFromSeries_amp_A9_A17_T0 [
+	<smallAmpCoveres: 'RemoveCaretOperator#DataSeries#removeNils#13#47'>
+	<madeBySmallAmp>
+	| array a b values |
+	values := #(#a #b #c).
+	series := DataSeries withValues: values.
+	series removeNils.
+	self should: [ series tail ] raise: SubscriptOutOfBounds
+]
+
+{ #category : #'as yet unclassified' }
+DataSeriesTest >> testArithmeticsSubtractArrayFromSeries_amp_T43_A61_A28 [
+	<smallAmpCoveres: 'RemoveCaretOperator#DataSeries#atIndex:put:#31#76'>
+	<madeBySmallAmp>
+	| array a b |
+	series atIndex: 3 put: 'abc'.
+	self should: [ series secondQuartile ] raise: MessageNotUnderstood
 ]
 
 { #category : #arithmetic }
@@ -364,6 +735,48 @@ DataSeriesTest >> testArithmeticsSubtractSeriesFromSeriesSameKeysAndName [
 	self assert: actual equals: expected.
 ]
 
+{ #category : #'as yet unclassified' }
+DataSeriesTest >> testArithmeticsSubtractSeriesFromSeriesSameKeysAndName_amp_A150 [
+	<smallAmpCoveres:
+		'ReplaceIfFalseReceiverWithTrueOperator#DataSeries#withSeries:collect:#258#325'>
+	<madeBySmallAmp>
+	| firstSeries secondSeries actual expected |
+	firstSeries := DataSeries
+		withKeys: #(a b c)
+		values: #(1 2 3)
+		name: #X.
+	secondSeries := DataSeries
+		withKeys: #(a b c)
+		values: #(3 4 5)
+		name: #X.
+	secondSeries sortDescending.
+	expected := DataSeries
+		withKeys: #(a b c)
+		values: #(-2 -2 -2)
+		name: #X.
+	self should: [ actual := firstSeries - secondSeries ] raise: Error
+]
+
+{ #category : #'as yet unclassified' }
+DataSeriesTest >> testArithmeticsSubtractSeriesFromSeriesSameKeysAndName_amp_A179_A326 [
+	<smallAmpCoveres: 'ReplaceLessOrEqualWithLessMutantOperator#DataSeries#sorted#34#39'>
+	<madeBySmallAmp>
+	| firstSeries secondSeries actual expected |
+	firstSeries := DataSeries
+		withKeys: #(a b c)
+		values: #(1 2 3)
+		name: #X.
+	secondSeries := DataSeries
+		withKeys: #(a b c)
+		values: #(3 4 5)
+		name: #X.
+	secondSeries removeAt: #a.
+	(DataSeries withKeys: #(a b c) values: #(-2 -2 -2) name: #X) sorted.
+	self
+		should: [ actual := firstSeries - secondSeries ]
+		raise: SizeMismatch
+]
+
 { #category : #arithmetic }
 DataSeriesTest >> testArithmeticsSubtractSeriesFromSeriesSameKeysDifferentName [
 	| firstSeries secondSeries actual expected |
@@ -375,6 +788,17 @@ DataSeriesTest >> testArithmeticsSubtractSeriesFromSeriesSameKeysDifferentName [
 	actual := firstSeries - secondSeries.
 	
 	self assert: actual equals: expected.
+]
+
+{ #category : #'as yet unclassified' }
+DataSeriesTest >> testArithmeticsSubtractSeriesFromSeries_amp_A0 [
+	<smallAmpCoveres:
+		'ReplaceDetectIfNoneFirstBlockWithAlwaysFalseBlockOperator#DataSeries#withIndexDetect:ifNone:#89#202'>
+	<madeBySmallAmp>
+	| a b c |
+	self
+		should: [ series withIndexDetect: [  ] ifNone: [  ] ]
+		raise: ArgumentsCountMismatch
 ]
 
 { #category : #converting }
@@ -903,6 +1327,21 @@ DataSeriesTest >> testCloseToDifferentKeys [
 	self deny: (firstSeries closeTo: secondSeries).
 ]
 
+{ #category : #'as yet unclassified' }
+DataSeriesTest >> testCloseToDifferentKeys_amp_A91_T4_A151 [
+	<smallAmpCoveres: 'ReplaceLessOrEqualWithLessMutantOperator#DataSeries#sort#28#33'>
+	<madeBySmallAmp>
+	| firstSeries secondSeries |
+	(series reject: [ :x | x >= 10 ]) sort.
+	firstSeries := DataSeries
+		withKeys: #(a b c)
+		values: #(1 0.1 2)
+		name: 'A'.
+	self
+		should: [ firstSeries atIndex: 8 put: 'abc' ]
+		raise: SubscriptOutOfBounds
+]
+
 { #category : #comparing }
 DataSeriesTest >> testCloseToDifferentNames [
 
@@ -1094,6 +1533,19 @@ DataSeriesTest >> testCreateDataSeriesWithValuesName [
 	self assert: dataSeries asArray equals: values.
 	self assert: dataSeries keys equals: #(1 2 3).
 	self assert: dataSeries name equals: name.
+]
+
+{ #category : #'as yet unclassified' }
+DataSeriesTest >> testCreateDataSeriesWithValues_amp_T44_A154_A169 [
+	<smallAmpCoveres: 'ReplaceLessOrEqualWithLessMutantOperator#DataSeries#sorted#34#39'>
+	<madeBySmallAmp>
+	| values dataSeries |
+	values := #(a b c).
+	dataSeries := series withIndexReject: [ :x :i | x >= 10 or: i even ].
+	dataSeries sorted.
+	self
+		should: [ dataSeries withSeries: DataSeries new collect: [  ] ]
+		raise: SizeMismatch
 ]
 
 { #category : #creation }
@@ -1567,6 +2019,20 @@ DataSeriesTest >> testRemoveNilsOnNamedSeries [
 	expected := DataSeries withKeys: #(2 'a') values: #(4.2 'b') name: 'A'.
 	
 	self assert: series removeNils equals: expected.
+]
+
+{ #category : #'as yet unclassified' }
+DataSeriesTest >> testRemoveNilsOnNamedSeries_amp_A112_A74 [
+	<smallAmpCoveres:
+		'ReplaceSelectBlockWithAlwaysTrueBlockOperator#DataSeries#replaceNilsWithMode#77#114'>
+	<madeBySmallAmp>
+	| expected |
+	series := DataSeries
+		withKeys: #(1 2 'a' 3)
+		values: #(nil 4.2 'b' nil)
+		name: 'A'.
+	series replaceNilsWithMode.
+	self should: [ series fifth ] raise: SubscriptOutOfBounds
 ]
 
 { #category : #'missing values' }
