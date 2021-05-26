@@ -73,6 +73,35 @@ DataFrameInternalTest >> testAddRowAtPositionSizeMismatch [
 
 ]
 
+{ #category : #'as yet unclassified' }
+DataFrameInternalTest >> testAddRowAtPositionSizeMismatch_amp_A12_T1 [
+	"I test correctness of: 
+
+- `contents numberOfColumns isNil
+	ifTrue: [ ^ 0 ]` in method: `DataFrameInternal >> #numberOfColumns`
+
+- `contents numberOfRows isNil
+	ifTrue: [ ^ 0 ]` in method: `DataFrameInternal >> #numberOfRows`
+
+"
+
+	<smallAmpCoveres:
+		'ReplaceIfTrueReceiverWithFalseOperator#DataFrameInternal#numberOfRows#16#60'>
+	<smallAmpCoveres:
+		'ReplaceIfTrueReceiverWithFalseOperator#DataFrameInternal#numberOfColumns#19#66'>
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrameInternal#numberOfRows#56#58'>
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrameInternal#numberOfColumns#62#64'>
+	<madeBySmallAmp>
+	| aBlock dfInternal |
+	dfInternal := DataFrameInternal new.
+	self
+		assert: dfInternal numberOfColumns equals: 0;
+		assert: dfInternal numberOfRows equals: 0;
+		should: [ df := dfInternal
+				withIndicesCollect: [ :each :i :j | each = ((i - 1) * 2 + j) ] ]
+			raise: MessageNotUnderstood
+]
+
 { #category : #tests }
 DataFrameInternalTest >> testAsArrayOfColumns [
 
@@ -88,6 +117,32 @@ DataFrameInternalTest >> testAsArrayOfColumns [
 
 ]
 
+{ #category : #'as yet unclassified' }
+DataFrameInternalTest >> testAsArrayOfColumns_amp_A12_T5_T11 [
+	"I test correctness of: 
+
+- `^ 0` in method: `DataFrameInternal >> #numberOfColumns`
+
+- `^ 0` in method: `DataFrameInternal >> #numberOfRows`
+
+"
+
+	<smallAmpCoveres:
+		'ReplaceIfTrueReceiverWithFalseOperator#DataFrameInternal#numberOfColumns#19#66'>
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrameInternal#numberOfColumns#62#64'>
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrameInternal#numberOfRows#56#58'>
+	<smallAmpCoveres:
+		'ReplaceIfTrueReceiverWithFalseOperator#DataFrameInternal#numberOfRows#16#60'>
+	<madeBySmallAmp>
+	| expected dfInternal |
+	dfInternal := DataFrameInternal new.
+	self
+		assert: dfInternal numberOfColumns equals: 0;
+		assert: dfInternal numberOfRows equals: 0;
+		should: [ df := dfInternal collect: [ :each | each * 10 ] ]
+			raise: MessageNotUnderstood
+]
+
 { #category : #tests }
 DataFrameInternalTest >> testAsArrayOfRows [
 
@@ -101,6 +156,24 @@ DataFrameInternalTest >> testAsArrayOfRows [
 	self assert: df asArrayOfRows equals: expected.
 	
 
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameInternalTest >> testAsArrayOfRows_amp_A3_A21_A52 [
+	"I test correctness of: 
+
+- `^ false` in method: `DataFrameInternal >> #=`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrameInternal#at:at:put:#43#92'>
+	<madeBySmallAmp>
+	| expected aFalse |
+	aFalse := df
+		deepCopy;
+		= DataFrameInternal new.
+	self deny: aFalse.
+	df at: 3 at: 1 put: 30
 ]
 
 { #category : #tests }
@@ -124,6 +197,84 @@ DataFrameInternalTest >> testAtAtPut [
 	expected := DataFrameInternal fromArray2D: array2D.
 	
 	self assert: actual equals: expected.
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameInternalTest >> testAtAtPut_amp_A80_A41 [
+	"I test correctness of: 
+
+- `k + 1` in method: `DataFrameInternal >> #removeColumnsOfRowElementsSatisfing:onRow:` when {#k->-1}
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrameInternal#columnsAt:#361#372'>
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrameInternal#rowAt:#18#90'>
+	<smallAmpCoveres: 'ReplaceAndReceiverWithTrueOperator#DataFrameInternal#=#11#144'>
+	<smallAmpCoveres:
+		'ReplaceIfTrueReceiverWithTrueOperator#DataFrameInternal#removeColumnsOfRowElementsSatisfing:onRow:#553#652'>
+	<smallAmpCoveres:
+		'ReplaceIfTrueReceiverWithFalseOperator#DataFrameInternal#removeColumnsOfRowElementsSatisfing:onRow:#553#652'>
+	<smallAmpCoveres:
+		'ReplacePlusWithMinusMutantOperator#DataFrameInternal#removeRowAt:#276#288'>
+	<smallAmpCoveres:
+		'ReplaceIfTrueIfFalseReceiverWithFalseOperator#DataFrameInternal#removeColumnsOfRowElementsSatisfing:onRow:#356#410'>
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrameInternal#initialize:#85#90'>
+	<smallAmpCoveres:
+		'ReplaceMinusWithPlusMutantOperator#DataFrameInternal#removeRowAt:#74#96'>
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrameInternal#=#253#259'>
+	<smallAmpCoveres:
+		'ReplaceSelectBlockWithAlwaysFalseBlockOperator#DataFrameInternal#removeColumnsOfRowElementsSatisfing:onRow:#504#541'>
+	<smallAmpCoveres:
+		'ReplaceMinusWithPlusMutantOperator#DataFrameInternal#removeRowAt:#183#195'>
+	<smallAmpCoveres:
+		'ReplaceIfTrueIfFalseReceiverWithTrueOperator#DataFrameInternal#removeColumnsOfRowElementsSatisfing:onRow:#747#876'>
+	<smallAmpCoveres:
+		'ReplaceIfTrueIfFalseReceiverWithFalseOperator#DataFrameInternal#removeColumnsOfRowElementsSatisfing:onRow:#747#876'>
+	<smallAmpCoveres: 'ReplaceIfFalseReceiverWithTrueOperator#DataFrameInternal#=#213#261'>
+	<smallAmpCoveres:
+		'ReplaceMinusWithPlusMutantOperator#DataFrameInternal#removeRowAt:#342#346'>
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrameInternal#withIndicesDo:#25#56'>
+	<smallAmpCoveres: 'ReplaceAndReceiverWithTrueOperator#DataFrameInternal#=#49#142'>
+	<smallAmpCoveres:
+		'RemoveCaretOperator#DataFrameInternal#removeColumnsOfRowElementsSatisfing:onRow:#642#647'>
+	<smallAmpCoveres:
+		'ReplaceSelectWithRejectMutantOperator#DataFrameInternal#removeColumnsOfRowElementsSatisfing:onRow:#504#541'>
+	<smallAmpCoveres:
+		'ReplacePlusWithMinusMutantOperator#DataFrameInternal#removeColumnsOfRowElementsSatisfing:onRow:#788#792'>
+	<smallAmpCoveres:
+		'ReplaceIfTrueWithIfFalseMutantOperator#DataFrameInternal#removeColumnsOfRowElementsSatisfing:onRow:#553#652'>
+	<smallAmpCoveres: 'ReplaceAndArgumentWithTrueOperator#DataFrameInternal#=#49#142'>
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrameInternal#collect:#19#72'>
+	<smallAmpCoveres:
+		'ReplaceIfTrueIfFalseReceiverWithTrueOperator#DataFrameInternal#removeColumnsOfRowElementsSatisfing:onRow:#356#410'>
+	<smallAmpCoveres:
+		'ReplaceMinusWithPlusMutantOperator#DataFrameInternal#removeColumnsOfRowElementsSatisfing:onRow:#480#547'>
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrameInternal#initialize#60#65'>
+	<smallAmpCoveres: 'ReplaceAndWithEqvMutantOperator#DataFrameInternal#=#11#144'>
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrameInternal#do:#14#34'>
+	<smallAmpCoveres: 'ReplaceAndWithOrMutantOperator#DataFrameInternal#=#49#142'>
+	<smallAmpCoveres:
+		'ReplaceSelectBlockWithAlwaysTrueBlockOperator#DataFrameInternal#removeColumnsOfRowElementsSatisfing:onRow:#504#541'>
+	<smallAmpCoveres:
+		'RemoveCaretOperator#DataFrameInternal#removeRowsOfColumnElementsSatisfing:onColumn:#574#579'>
+	<smallAmpCoveres:
+		'ReplaceIfTrueReceiverWithFalseOperator#DataFrameInternal#removeRowsOfColumnElementsSatisfing:onColumn:#488#584'>
+	<smallAmpCoveres:
+		'ReplaceMinusWithPlusMutantOperator#DataFrameInternal#removeColumnsOfRowElementsSatisfing:onRow:#837#841'>
+	<smallAmpCoveres:
+		'ReplaceEqualWithNotEqualOperator#DataFrameInternal#removeColumnsOfRowElementsSatisfing:onRow:#553#585'>
+	<madeBySmallAmp>
+	| array2D expected actual aCollection |
+	array2D := Array2D rows: 3 columns: 2 contents: #(1 2 3 4 5 6).
+	actual := DataFrameInternal fromArray2D: array2D.
+	aCollection := actual columnAt: 2.
+	self assert: aCollection equals: #(2 4 6).
+	actual at: 2 at: 2 put: 10.
+	array2D at: 2 at: 2 put: 10.
+	expected := DataFrameInternal fromArray2D: array2D.
+	self
+		should: [ expected withIndicesCollect: [  ] ]
+		raise: ArgumentsCountMismatch
 ]
 
 { #category : #tests }
