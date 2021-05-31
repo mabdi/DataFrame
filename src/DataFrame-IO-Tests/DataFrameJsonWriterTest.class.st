@@ -41,6 +41,28 @@ DataFrameJsonWriterTest >> testWriteAsString [
 	self assert: actual equals: expected.
 ]
 
+{ #category : #'as yet unclassified' }
+DataFrameJsonWriterTest >> testWriteAsString_amp [
+	"I test correctness of: 
+
+- `^ orient` in method: `DataFrameJsonWriter >> #orient` when {#orient->'records'}
+
+- `^ pretty` in method: `DataFrameJsonWriter >> #pretty` when {#pretty->false}
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrameJsonWriter#orient#9#16'>
+	<madeBySmallAmp>
+	| actual expected aDataFrameJsonWriter |
+	aDataFrameJsonWriter := DataFrameJsonWriter new.
+	self
+		assert:
+			aDataFrameJsonWriter orient equals: 'records';
+		deny:
+			aDataFrameJsonWriter pretty.
+	actual := aDataFrameJsonWriter writeAsString: df
+]
+
 { #category : #tests }
 DataFrameJsonWriterTest >> testWriteTo [
 	| file actual expected |
