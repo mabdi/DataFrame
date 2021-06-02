@@ -130,6 +130,17 @@ DataSeriesTest >> testArithmeticsDivideSeriesByArray [
 	self assert: a / array equals: b.
 ]
 
+{ #category : #'as yet unclassified' }
+DataSeriesTest >> testArithmeticsDivideSeriesByArray_amp_T5_A1 [
+	<smallAmpCoveres:
+		'ReplaceIfFalseReceiverWithTrueOperator#DataSeries#crossTabulateWith:#39#99'>
+	<madeBySmallAmp>
+	| array a b |
+	self
+		should: [ series crossTabulateWith: DataSeries new ]
+		raise: SizeMismatch
+]
+
 { #category : #arithmetic }
 DataSeriesTest >> testArithmeticsDivideSeriesByScalar [
 
@@ -364,6 +375,21 @@ DataSeriesTest >> testArithmeticsSubtractSeriesFromSeriesSameKeysAndName [
 	self assert: actual equals: expected.
 ]
 
+{ #category : #'as yet unclassified' }
+DataSeriesTest >> testArithmeticsSubtractSeriesFromSeriesSameKeysAndName_amp_A210_A73_A122 [
+	<smallAmpCoveres: 'RemoveCaretOperator#DataSeries#removeAt:#17#38'>
+	<madeBySmallAmp>
+	| firstSeries secondSeries actual expected |
+	firstSeries := DataSeries
+		withKeys: #(a b c)
+		values: #(1 2 3)
+		name: #X.
+	firstSeries removeAt: #c.
+	self
+		should: [ firstSeries withKeyCollect: [  ] ]
+		raise: ArgumentsCountMismatch
+]
+
 { #category : #arithmetic }
 DataSeriesTest >> testArithmeticsSubtractSeriesFromSeriesSameKeysDifferentName [
 	| firstSeries secondSeries actual expected |
@@ -375,6 +401,27 @@ DataSeriesTest >> testArithmeticsSubtractSeriesFromSeriesSameKeysDifferentName [
 	actual := firstSeries - secondSeries.
 	
 	self assert: actual equals: expected.
+]
+
+{ #category : #'as yet unclassified' }
+DataSeriesTest >> testArithmeticsSubtractSeriesFromSeriesSameKeysDifferentName_amp_A405_T7_A201 [
+	<smallAmpCoveres:
+		'ReplaceIfFalseReceiverWithTrueOperator#DataSeries#withSeries:collect:#258#325'>
+	<madeBySmallAmp>
+	| firstSeries secondSeries actual expected |
+	firstSeries := DataSeries
+		withKeys: #(a b c) values: #(1 0.10000001 2) name: 'A';
+		withKeys: #(a b c) values: #(1 2 3) name: #X.
+	firstSeries sortDescending.
+	secondSeries := DataSeries
+		withKeys: #(a b c)
+		values: #(3 4 5)
+		name: #Y.
+	expected := DataSeries
+		withKeys: #(a b c)
+		values: #(-2 -2 -2)
+		name: #X.
+	self should: [ actual := firstSeries - secondSeries ] raise: Error
 ]
 
 { #category : #converting }
@@ -552,6 +599,19 @@ DataSeriesTest >> testBooleanGreaterThanEqualWithScalar [
 	expected := DataSeries withKeys: #(a b c) values: #(true false true).
 	
 	self assert: firstSeries >= 0.8 equals: expected.
+]
+
+{ #category : #'as yet unclassified' }
+DataSeriesTest >> testBooleanGreaterThanEqualWithScalar_amp_A139_A251_A202 [
+	<smallAmpCoveres: 'RemoveCaretOperator#DataSeries#removeAt:#17#38'>
+	<madeBySmallAmp>
+	| firstSeries expected |
+	firstSeries := DataSeries withKeys: #(a b c) values: #(0.8 0.4 1).
+	firstSeries
+		name;
+		removeAt: #c.
+	expected := DataSeries withKeys: #(a b c) values: #(true false true).
+	self should: [ expected quartile: 0 ] raise: MessageNotUnderstood
 ]
 
 { #category : #comparing }

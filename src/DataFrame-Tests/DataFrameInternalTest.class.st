@@ -73,6 +73,27 @@ DataFrameInternalTest >> testAddRowAtPositionSizeMismatch [
 
 ]
 
+{ #category : #'as yet unclassified' }
+DataFrameInternalTest >> testAddRowAtPositionSizeMismatch_amp_T2 [
+	"I test correctness of: 
+
+- `^ 0` in method: `DataFrameInternal >> #numberOfColumns`
+
+- `^ 0` in method: `DataFrameInternal >> #numberOfRows`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrameInternal#numberOfRows#56#58'>
+	<madeBySmallAmp>
+	| aBlock dfInternal |
+	dfInternal := DataFrameInternal new.
+	self
+		assert: dfInternal numberOfColumns equals: 0;
+		assert: dfInternal numberOfRows equals: 0;
+		should: [ df := dfInternal collect: [ :each | each * 10 ] ]
+			raise: MessageNotUnderstood
+]
+
 { #category : #tests }
 DataFrameInternalTest >> testAsArrayOfColumns [
 
@@ -248,6 +269,24 @@ DataFrameInternalTest >> testDo [
 		sum := sum + each ].
 	
 	self assert: sum equals: 21.
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameInternalTest >> testDo_amp [
+	"I test correctness of: 
+
+- `^ contents do: aBlock` in method: `DataFrameInternal >> #do:`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrameInternal#do:#14#34'>
+	<madeBySmallAmp>
+	| dfInternal sum aCollection |
+	dfInternal := DataFrameInternal withRows: #(#(1 2) #(3 4) #(5 6)).
+	sum := 0.
+	aCollection := dfInternal do: [ :each | sum := sum + each ].
+	self assert:
+		aCollection class equals: Array2D
 ]
 
 { #category : #tests }
@@ -492,6 +531,23 @@ DataFrameInternalTest >> testWithIndicesDo [
 		
 	dfInternal withIndicesDo: [ :each :i :j |
 		self assert: each equals: ((i - 1) * 2 + j) ].
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameInternalTest >> testWithIndicesDo_amp [
+	"I test correctness of: 
+
+- `^ contents withIndicesDo: aBlock` in method: `DataFrameInternal >> #withIndicesDo:`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrameInternal#withIndicesDo:#25#56'>
+	<madeBySmallAmp>
+	| dfInternal aCollection |
+	aCollection := (DataFrameInternal withRows: #(#(1 2) #(3 4) #(5 6)))
+		withIndicesDo: [ :each :i :j |  ].
+	self assert:
+		aCollection class equals: Array2D
 ]
 
 { #category : #tests }
