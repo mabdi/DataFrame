@@ -84,6 +84,29 @@ DataFrameTest >> testAddColumnNameMustBeDistinct [
 	self should: [ df addColumn: series ] raise: Error.
 ]
 
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testAddColumnNameMustBeDistinct_amp_T14 [
+	"I test correctness of: 
+
+- `^ self head: self defaultHeadTailSize` in method: `DataFrame >> #head`
+
+- `^ self rowsAt: (rows - n + 1 to: rows)` in method: `DataFrame >> #tail:`
+
+- `(rows - n)` in method: `DataFrame >> #tail:` when {#rows->3. #n->3}
+
+"
+
+	<smallAmpCoveres: 'ReplaceMinusWithPlusMutantOperator#DataFrame#tail:#151#158'>
+	<madeBySmallAmp>
+	| series |
+	df := DataFrame
+		withRows: #(#(Barcelona 1.609 true) #(Dubai 2.789 true) #(London 8.788 false)).
+	self
+		assert: df head class equals: DataFrame;
+		assert: df head head tail class equals: DataFrame;
+		assert: df head tail numberOfRows equals: 3
+]
+
 { #category : #tests }
 DataFrameTest >> testAddColumnNamed [
 	| expected |
@@ -118,10 +141,112 @@ DataFrameTest >> testAddColumnNamedAtPosition [
 	self assert: df equals: expected.
 ]
 
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testAddColumnNamedAtPosition_amp [
+	"I test correctness of: 
+
+- `^ 5` in method: `DataFrame >> #defaultHeadTailSize`
+
+- `^ self head: self defaultHeadTailSize` in method: `DataFrame >> #head`
+
+- `^ self rowsAt: (rows - n + 1 to: rows)` in method: `DataFrame >> #tail:`
+
+- `(rows - n)` in method: `DataFrame >> #tail:` when {#rows->3. #n->3}
+
+"
+
+	<smallAmpCoveres: 'ReplaceMinusWithPlusMutantOperator#DataFrame#tail:#151#158'>
+	<madeBySmallAmp>
+	| expected |
+	df addColumn: #(2015 2010 2017) named: #Year atPosition: 3.
+	self
+		assert: df defaultHeadTailSize equals: 5;
+		assert: df head class equals: DataFrame;
+		assert: df head head tail class equals: DataFrame;
+		assert: df head tail numberOfRows equals: 3.
+	expected := DataFrame
+		withRows:
+			#(#(Barcelona 1.609 2015 true) #(Dubai 2.789 2010 true) #(London 8.788 2017 false)).
+	expected
+		rowNames: #(A B C);
+		columnNames: #(City Population Year BeenThere)
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testAddColumnNamedAtPosition_amp_A196_A14_T13 [
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#head#9#45'>
+	<madeBySmallAmp>
+	| expected |
+	df := DataFrame
+		withRows:
+			#(#('K0' 'A0' 0 'B6' false) #('K1' 'A1' 1 'B3' true) #('K1' 'A2' 2 'B3' true) #('K2' 'A3' 3 'B1' true) #('K2' 'A3' 3 'B2' false) #('K0' 'A4' 4 'B6' false))
+		columnNames: #(Key A B C D).
+	df columnsFrom: 2 to: 3.
+	self
+		should: [ df addColumn: #(2015 2010 2017) named: #Year atPosition: 3 ]
+		raise: SizeMismatch
+]
+
 { #category : #tests }
 DataFrameTest >> testAddColumnNamedNameMustBeDistinct [
 
 	self should: [ df addColumn: #(1 2 3) named: #City ] raise: Error.
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testAddColumnNamed_amp [
+	"I test correctness of: 
+
+- `^ 5` in method: `DataFrame >> #defaultHeadTailSize`
+
+- `^ self head: self defaultHeadTailSize` in method: `DataFrame >> #head`
+
+- `^ self rowsAt: (rows - n + 1 to: rows)` in method: `DataFrame >> #tail:`
+
+- `(rows - n)` in method: `DataFrame >> #tail:` when {#rows->3. #n->3}
+
+"
+
+	<smallAmpCoveres: 'ReplaceMinusWithPlusMutantOperator#DataFrame#tail:#151#158'>
+	<madeBySmallAmp>
+	| expected |
+	df addColumn: #(2015 2010 2017) named: #Year.
+	self
+		assert: df defaultHeadTailSize equals: 5;
+		assert: df head class equals: DataFrame;
+		assert: df head head tail class equals: DataFrame;
+		assert: df head tail numberOfRows equals: 3.
+	expected := DataFrame
+		withRows:
+			#(#(Barcelona 1.609 true 2015) #(Dubai 2.789 true 2010) #(London 8.788 false 2017)).
+	expected
+		rowNames: #(A B C);
+		columnNames: #(City Population BeenThere Year)
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testAddColumnNamed_amp_A178_A111 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #mode` in method: `DataFrame >> #mode`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#applyToAllColumns:#410#417'>
+	<madeBySmallAmp>
+	| expected aCollection |
+	aCollection := df
+		addColumn: #(2015 2010 2017) named: #Year;
+		mode.
+	self assert:
+		aCollection class equals: DataSeries.
+	expected := DataFrame
+		withRows:
+			#(#(Barcelona 1.609 true 2015) #(Dubai 2.789 true 2010) #(London 8.788 false 2017)).
+	expected
+		columnAt: 1;
+		rowNames: #(A B C);
+		columnNames: #(City Population BeenThere Year)
 ]
 
 { #category : #tests }
@@ -198,6 +323,82 @@ DataFrameTest >> testAddEmptyRowNamedAtPosition [
 	self assert: df equals: expected.
 ]
 
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testAddEmptyRowNamedAtPosition_amp [
+	"I test correctness of: 
+
+- `^ 5` in method: `DataFrame >> #defaultHeadTailSize`
+
+- `^ self head: self defaultHeadTailSize` in method: `DataFrame >> #head`
+
+- `^ self rowsAt: (rows - n + 1 to: rows)` in method: `DataFrame >> #tail:`
+
+- `(rows - n)` in method: `DataFrame >> #tail:` when {#rows->4. #n->4}
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#defaultHeadTailSize#23#25'>
+	<madeBySmallAmp>
+	| expected |
+	expected := DataFrame
+		withRows:
+			#(#(Barcelona 1.609 true) #(Dubai 2.789 true) #(nil nil nil) #(London 8.788 false)).
+	self
+		assert: expected defaultHeadTailSize equals: 5;
+		assert: expected head class equals: DataFrame;
+		assert: expected head head tail class equals: DataFrame;
+		assert: expected head tail numberOfRows equals: 4.
+	expected
+		rowNames: #(A B X C);
+		columnNames: #(City Population BeenThere).
+	df addEmptyRowNamed: #X atPosition: 3
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testAddEmptyRowNamedAtPosition_amp_A334 [
+	"I test correctness of: 
+
+- `^ series` in method: `DataFrame >> #applyToAllColumns:` when {#series->nil}
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#applyToAllColumns:#410#417'>
+	<madeBySmallAmp>
+	| expected aCollection |
+	expected := DataFrame
+		withRows:
+			#(#(Barcelona 1.609 true) #(Dubai 2.789 true) #(nil nil nil) #(London 8.788 false)).
+	aCollection := (expected
+		rowNames: #(A B X C);
+		columnNames: #(City Population BeenThere)) mode.
+	self assert:
+		aCollection class equals: DataSeries.
+	df addEmptyRowNamed: #X atPosition: 3
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testAddEmptyRowNamed_amp_T26_A208_A351 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #mode` in method: `DataFrame >> #mode`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#applyToAllColumns:#410#417'>
+	<madeBySmallAmp>
+	| expected aCollection |
+	expected := DataFrame
+		withRows:
+			#(#('K0' 'B0' true) #('K1' 'B1' false) #('K2' 'B2' true) #('K3' 'B3' false))
+		rowNames: #('1K0' '1K1' '1K2' '1K3')
+		columnNames: #(Key C D).
+	aCollection := ((expected rowNames: #(A B C X)) removeRow: #C) mode.
+	self assert:
+		aCollection class equals: DataSeries.
+	expected columnNames: #(City Population BeenThere).
+	df addEmptyRowNamed: #X
+]
+
 { #category : #tests }
 DataFrameTest >> testAddRow [
 
@@ -235,6 +436,64 @@ DataFrameTest >> testAddRowAtPosition [
 	expected columnNames: #(City Population BeenThere).
 	
 	self assert: df equals: expected.
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testAddRowAtPosition_amp [
+	"I test correctness of: 
+
+- `^ 5` in method: `DataFrame >> #defaultHeadTailSize`
+
+- `^ self head: self defaultHeadTailSize` in method: `DataFrame >> #head`
+
+- `^ self rowsAt: (rows - n + 1 to: rows)` in method: `DataFrame >> #tail:`
+
+- `(rows - n)` in method: `DataFrame >> #tail:` when {#rows->4. #n->4}
+
+"
+
+	<smallAmpCoveres: 'ReplaceMinusWithPlusMutantOperator#DataFrame#tail:#151#158'>
+	<madeBySmallAmp>
+	| row expected |
+	row := DataSeries withValues: #(Paris 2.141 true) name: #X.
+	df addRow: row atPosition: 2.
+	self
+		assert: df defaultHeadTailSize equals: 5;
+		assert: df head class equals: DataFrame;
+		assert: df head head tail class equals: DataFrame;
+		assert: df head tail numberOfRows equals: 4.
+	expected := DataFrame
+		withRows:
+			#(#(Barcelona 1.609 true) #(Paris 2.141 true) #(Dubai 2.789 true) #(London 8.788 false)).
+	expected
+		rowNames: #(A X B C);
+		columnNames: #(City Population BeenThere)
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testAddRowAtPosition_amp_A146_A290 [
+	"I test correctness of: 
+
+- `^ series` in method: `DataFrame >> #applyToAllColumns:` when {#series->nil}
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#applyToAllColumns:#410#417'>
+	<madeBySmallAmp>
+	| row expected aCollection |
+	row := DataSeries withValues: #(Paris 2.141 true) name: #X.
+	df addRow: row atPosition: 2.
+	expected := DataFrame
+		withRows:
+			#(#(Barcelona 1.609 true) #(Paris 2.141 true) #(Dubai 2.789 true) #(London 8.788 false)).
+	aCollection := expected
+		rowAt: 4;
+		mode.
+	self assert:
+		aCollection class equals: DataSeries.
+	expected
+		rowNames: #(A X B C);
+		columnNames: #(City Population BeenThere)
 ]
 
 { #category : #tests }
@@ -287,6 +546,29 @@ DataFrameTest >> testAddRowNamedNameMustBeDistinct [
 	self should: [ df addRow: #(1 2 3) named: #A ] raise: Error.
 ]
 
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testAddRowNamed_amp_T44 [
+	"I test correctness of: 
+
+- `rows > aNumber
+	ifTrue: [ n := aNumber ]
+	ifFalse: [ n := rows ]` in method: `DataFrame >> #tail:` when {#rows->6. #aNumber->5. #n->nil}
+
+"
+
+	<smallAmpCoveres: 'ReplaceIfTrueIfFalseReceiverWithFalseOperator#DataFrame#head:#26#118'>
+	<madeBySmallAmp>
+	| expected |
+	df addRow: #(Paris 2.141 true) named: #X.
+	expected := DataFrame
+		withRows:
+			#(#('K0' 'A0' 0 'B6' false) #('K1' 'A1' 1 'B3' true) #('K1' 'A2' 2 'B3' true) #('K2' 'A3' 3 'B1' true) #('K2' 'A3' 3 'B2' false) #('K0' 'A4' 4 'B6' false))
+		columnNames: #(Key A B C D).
+	self
+		assert: expected tail dimensions equals: 5 @ 5;
+		should: [ expected rowNames: #(A B C X) ] raise: SizeMismatch
+]
+
 { #category : #tests }
 DataFrameTest >> testAddRowSizeMismatch [
 
@@ -294,6 +576,59 @@ DataFrameTest >> testAddRowSizeMismatch [
 	aBlock := [ df addRow: #(1 2) named: #TooSmall ].
 	
 	self should: aBlock raise: SizeMismatch.
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testAddRow_amp_T48_A197 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #median` in method: `DataFrame >> #median`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#median#10#42'>
+	<madeBySmallAmp>
+	| row expected aCollection |
+	row := DataSeries withValues: #(Paris 2.141 true) name: #X.
+	df addRow: row.
+	expected := DataFrame withRows: #(#(1 2) #(3 4)).
+	aCollection := expected median.
+	self
+		assert:
+			aCollection class equals: DataSeries;
+		should: [ expected rowNames: #(A B C X) ] raise: SizeMismatch
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testAdd_amp [
+	"I test correctness of: 
+
+- `^ 5` in method: `DataFrame >> #defaultHeadTailSize`
+
+- `^ self head: self defaultHeadTailSize` in method: `DataFrame >> #head`
+
+- `^ self rowsAt: (rows - n + 1 to: rows)` in method: `DataFrame >> #tail:`
+
+- `(rows - n)` in method: `DataFrame >> #tail:` when {#rows->4. #n->4}
+
+"
+
+	<smallAmpCoveres: 'ReplaceMinusWithPlusMutantOperator#DataFrame#tail:#151#158'>
+	<madeBySmallAmp>
+	| row expected |
+	row := DataSeries withValues: #(Paris 2.141 true) name: #X.
+	df add: row.
+	self
+		assert: df defaultHeadTailSize equals: 5;
+		assert: df head class equals: DataFrame;
+		assert: df head head tail class equals: DataFrame;
+		assert: df head tail numberOfRows equals: 4.
+	expected := DataFrame
+		withRows:
+			#(#(Barcelona 1.609 true) #(Dubai 2.789 true) #(London 8.788 false) #(Paris 2.141 true)).
+	expected
+		rowNames: #(A B C X);
+		columnNames: #(City Population BeenThere)
 ]
 
 { #category : #tests }
@@ -309,6 +644,45 @@ DataFrameTest >> testAsArrayOfColumns [
 	self assert: df asArrayOfColumns equals: expected.
 	
 
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testAsArrayOfColumns_amp_A6_T8_A197 [
+	<smallAmpCoveres:
+		'ReplaceIfFalseReceiverWithTrueOperator#DataFrame#columnAt:put:#35#101'>
+	<madeBySmallAmp>
+	| expected rowNames |
+	rowNames := #(#A #C).
+	df := df rows: rowNames.
+	self
+		should: [ df column: #Population put: #('1.609' '2.789' '8.788') ]
+		raise: SizeMismatch
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testAsArrayOfColumns_amp_T23 [
+	"I test correctness of: 
+
+- `^ 5` in method: `DataFrame >> #defaultHeadTailSize`
+
+- `^ self rowsAt: (1 to: n)` in method: `DataFrame >> #head:`
+
+- `^ self rowsAt: (rows - n + 1 to: rows)` in method: `DataFrame >> #tail:`
+
+- `(rows - n)` in method: `DataFrame >> #tail:` when {#rows->3. #n->3}
+
+"
+
+	<smallAmpCoveres: 'ReplaceMinusWithPlusMutantOperator#DataFrame#tail:#151#158'>
+	<madeBySmallAmp>
+	| expected |
+	df := DataFrame
+		withRows: #(#('BARCELONA' 1) #('DUBAI' 2) #('LONDON' 8)).
+	self
+		assert: df defaultHeadTailSize equals: 5;
+		assert: df head class equals: DataFrame;
+		assert: df head head tail class equals: DataFrame;
+		assert: df head tail numberOfRows equals: 3
 ]
 
 { #category : #tests }
@@ -401,6 +775,117 @@ DataFrameTest >> testAtTransform [
 	self assert: df equals: expected
 ]
 
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testAtTransform_amp_A47 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #mode` in method: `DataFrame >> #mode`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#applyToAllColumns:#410#417'>
+	<madeBySmallAmp>
+	| expected aCollection |
+	aCollection := df mode.
+	self assert:
+		aCollection class equals: DataSeries.
+	expected := DataFrame
+		withRows: #(#(Barcelona 1.609 true) #(Dubai 0 true) #(London 8.788 false))
+		rowNames: #(A B C)
+		columnNames: #(City Population BeenThere).
+	df
+		at: 2
+		transform: [ :row | 
+			row
+				at: #Population put: 0;
+				yourself ]
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testAtTransform_amp_O9 [
+	<smallAmpCoveres: 'ReplaceIfFalseReceiverWithTrueOperator#DataFrame#rowAt:put:#31#100'>
+	<madeBySmallAmp>
+	| expected |
+	expected := DataFrame
+		withRows: #(#(#City 1.609 true) #(#Population 0 true) #(#BeenThere 8.788 false))
+		rowNames: #(#Population #Barcelona #Dubai)
+		columnNames: #(#London #A #B).
+	self
+		should: [ df
+				at: 2
+				transform: [ :row | 
+					row
+						at: #C put: 0;
+						yourself ] ]
+		raise: SizeMismatch
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testAt_amp [
+	"I test correctness of: 
+
+- `^ 5` in method: `DataFrame >> #defaultHeadTailSize`
+
+- `^ self head: self defaultHeadTailSize` in method: `DataFrame >> #head`
+
+- `^ self rowsAt: (rows - n + 1 to: rows)` in method: `DataFrame >> #tail:`
+
+- `(rows - n)` in method: `DataFrame >> #tail:` when {#rows->3. #n->3}
+
+"
+
+	<smallAmpCoveres: 'ReplaceMinusWithPlusMutantOperator#DataFrame#tail:#151#158'>
+	<madeBySmallAmp>
+	| actual expected |
+	expected := DataSeries withValues: #('Dubai' 2.789 true).
+	expected
+		name: #B;
+		keys: df columnNames.
+	actual := df at: 2.
+	self
+		assert: df defaultHeadTailSize equals: 5;
+		assert: df head class equals: DataFrame;
+		assert: df head head tail class equals: DataFrame;
+		assert: df head tail numberOfRows equals: 3
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testAt_amp_T14_A170_A76 [
+	<smallAmpCoveres:
+		'ReplaceIfFalseReceiverWithTrueOperator#DataFrame#columnAt:put:#35#101'>
+	<madeBySmallAmp>
+	| actual expected |
+	df := DataFrame
+		withRows: #(#(Barcelona 1.609 true) #(Dubai 2.789 true) #(London 8.788 false)).
+	self
+		should: [ df columnsFrom: 3 to: 2 put: #(#(1 1 1 1 1) #(2 2 2 2 2)) ]
+		raise: SizeMismatch
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testAt_amp_T14_A188_A106 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #mode` in method: `DataFrame >> #mode`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#applyToAllColumns:#410#417'>
+	<madeBySmallAmp>
+	| actual expected aCollection |
+	df := DataFrame
+		withRows: #(#(Barcelona 1.609 true) #(Dubai 2.789 true) #(London 8.788 false)).
+	aCollection := df mode.
+	self assert:
+		aCollection class equals: DataSeries.
+	expected := DataSeries withValues: #('Dubai' 2.789 true).
+	expected
+		name: #B;
+		keys: df columnNames.
+	actual := df at: 2.
+	self should: [ actual sortDescending ] raise: MessageNotUnderstood
+]
+
 { #category : #tests }
 DataFrameTest >> testCollect [
 	| expectedDf expectedResult actualResult |
@@ -429,6 +914,38 @@ DataFrameTest >> testCollect [
 	
 	self assert: actualResult equals: expectedResult.
 	self assert: df equals: expectedDf.
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testCollect_amp_A365 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #firstQuartile` in method: `DataFrame >> #firstQuartile`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#firstQuartile#17#56'>
+	<madeBySmallAmp>
+	| expectedDf expectedResult actualResult aCollection |
+	expectedDf := DataFrame
+		withRows: #(#(Barcelona 1.609 true) #(Dubai 2.789 true) #(London 8.788 false)).
+	expectedDf
+		rowNames: #(A B C);
+		columnNames: #(City Population BeenThere).
+	expectedResult := DataFrame
+		withRows: #(#('BARCELONA' 1) #('DUBAI' 2) #('LONDON' 8)).
+	aCollection := expectedResult
+		rowNames: #(A B C);
+		firstQuartile.
+	self assert:
+		aCollection class equals: DataSeries.
+	expectedResult columnNames: #(City Population).
+	actualResult := df
+		collect: [ :row | 
+			row at: #City put: (row at: #City) asUppercase.
+			row at: #Population put: (row at: #Population) asInteger.
+			row removeAt: #BeenThere.
+			row ]
 ]
 
 { #category : #tests }
@@ -500,6 +1017,110 @@ DataFrameTest >> testColumnAtTransform [
 	self assert: df equals: expected
 ]
 
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testColumnAtTransform_amp_A56_T6 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #max` in method: `DataFrame >> #max`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#max#7#36'>
+	<madeBySmallAmp>
+	| expected aCollection |
+	df := DataFrame withColumns: #().
+	aCollection := df max.
+	self assert:
+		aCollection class equals: DataSeries.
+	expected := DataFrame
+		withRows: #(#(Barcelona 1.609 true) #(Dubai 0 true) #(London 8.788 false))
+		rowNames: #(A B C)
+		columnNames: #(City Population BeenThere).
+	self
+		should: [ df
+				columnAt: 2
+				transform: [ :column | 
+					column
+						at: #B put: 0;
+						yourself ] ]
+		raise: SubscriptOutOfBounds
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testColumnAtTransform_amp_O10 [
+	<smallAmpCoveres:
+		'ReplaceIfFalseReceiverWithTrueOperator#DataFrame#columnAt:put:#35#101'>
+	<madeBySmallAmp>
+	| expected |
+	expected := DataFrame
+		withRows: #(#(#Population 1.609 true) #(#BeenThere 0 true) #(#B 8.788 false))
+		rowNames: #(#Barcelona #Dubai #London)
+		columnNames: #(#A #B #C).
+	self
+		should: [ df
+				columnAt: 2
+				transform: [ :column | 
+					column
+						at: #City put: 0;
+						yourself ] ]
+		raise: SizeMismatch
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testColumnAtTransform_amp_T1 [
+	<smallAmpCoveres:
+		'ReplaceIfFalseReceiverWithTrueOperator#DataFrame#columnAt:put:#35#101'>
+	<madeBySmallAmp>
+	| expected |
+	df := DataFrame
+		withRows: #(#(Barcelona 1.609 true) #(Dubai 2.789 true) #(London 8.788 false)).
+	expected := DataFrame
+		withRows: #(#(Barcelona 1.609 true) #(Dubai 0 true) #(London 8.788 false))
+		rowNames: #(A B C)
+		columnNames: #(City Population BeenThere).
+	self
+		should: [ df
+				columnAt: 2
+				transform: [ :column | 
+					column
+						at: #B put: 0;
+						yourself ] ]
+		raise: SizeMismatch
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testColumnAtTransform_amp_T7 [
+	"I test correctness of: 
+
+- `rows > aNumber
+	ifTrue: [ n := aNumber ]
+	ifFalse: [ n := rows ]` in method: `DataFrame >> #tail:` when {#rows->7. #aNumber->5. #n->nil}
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#head#9#45'>
+	<madeBySmallAmp>
+	| expected |
+	df := DataFrame
+		withRows:
+			#(#('K3' 'B0' false) #('K2' 'B1' true) #('K2' 'B2' false) #('K1' 'B3' true) #('K3' 'B4' false) #('K3' 'B5' true) #('K0' 'B6' false))
+		rowNames: #('1K3' '1K2' '2K2' '1K1' '2K3' '3K3' '1K0')
+		columnNames: #(Key C D).
+	self assert: df tail dimensions equals: 5 @ 3.
+	expected := DataFrame
+		withRows: #(#(Barcelona 1.609 true) #(Dubai 0 true) #(London 8.788 false))
+		rowNames: #(A B C)
+		columnNames: #(City Population BeenThere).
+	self
+		should: [ df
+				columnAt: 2
+				transform: [ :column | 
+					column
+						at: #B put: 0;
+						yourself ] ]
+		raise: SizeMismatch
+]
+
 { #category : #tests }
 DataFrameTest >> testColumnIfAbsent [
 
@@ -528,6 +1149,25 @@ DataFrameTest >> testColumnNamesMustBeDistinct [
 	self should: [ df columnNames: newNames ] raise: Error.
 ]
 
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testColumnNamesMustBeDistinct_amp_A3_T6 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #thirdQuartile` in method: `DataFrame >> #thirdQuartile`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#thirdQuartile#17#56'>
+	<madeBySmallAmp>
+	| newNames aCollection |
+	aCollection := (DataFrame
+		withColumns: #()
+		rowNames: #()
+		columnNames: #()) thirdQuartile.
+	self assert:
+		aCollection class equals: DataSeries
+]
+
 { #category : #tests }
 DataFrameTest >> testColumnNamesSizeMismatch [
 	| tooManyNames notEnoughNames |
@@ -537,6 +1177,33 @@ DataFrameTest >> testColumnNamesSizeMismatch [
 	
 	self should: [ df columnNames: tooManyNames ] raise: SizeMismatch.
 	self should: [ df columnNames: notEnoughNames ] raise: SizeMismatch.
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testColumnNamesSizeMismatch_amp_A44 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #mode` in method: `DataFrame >> #mode`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#mode#8#38'>
+	<madeBySmallAmp>
+	| tooManyNames notEnoughNames aCollection |
+	aCollection := df mode.
+	self assert:
+		aCollection class equals: DataSeries
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testColumnNamesSizeMismatch_amp_A6_T10 [
+	<smallAmpCoveres: 'ReplaceIfFalseReceiverWithTrueOperator#DataFrame#rowAt:put:#31#100'>
+	<madeBySmallAmp>
+	| tooManyNames notEnoughNames |
+	df := DataFrame new: 3 @ 2.
+	self
+		should: [ df rowAt: 2 put: #(#Dubai 0 true) ]
+		raise: SizeMismatch
 ]
 
 { #category : #tests }
@@ -788,6 +1455,142 @@ DataFrameTest >> testColumnsFromToPut [
 	self assert: dataFrame equals: expected.
 ]
 
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testColumnsFromToPut_amp_A133_A125 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #average` in method: `DataFrame >> #average`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#average#11#44'>
+	<madeBySmallAmp>
+	| rowNames columnNames dataFrame newColumns expected aCollection |
+	rowNames := #('01:10' '01:30' '01:50' '02:10' '02:30')
+		collect: #asTime.
+	columnNames := #(temperature precipitation type).
+	dataFrame := DataFrame
+		withRows:
+			#(#(2.4 true rain) #(0.5 true rain) #(-1.2 true snow) #(-2.3 false -) #(3.2 true rain))
+		rowNames: rowNames
+		columnNames: columnNames.
+	newColumns := #(#(1 1 1 1 1) #(2 2 2 2 2)).
+	expected := DataFrame
+		withRows: #(#(2.4 2 1) #(0.5 2 1) #(-1.2 2 1) #(-2.3 2 1) #(3.2 2 1))
+		rowNames: rowNames
+		columnNames: columnNames.
+	aCollection := expected average.
+	self assert:
+		aCollection class equals: DataSeries.
+	expected dimensions.
+	dataFrame columnsFrom: 3 to: 2 put: newColumns
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testColumnsFromToPut_amp_A162_A309 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #range` in method: `DataFrame >> #range`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#range#9#40'>
+	<madeBySmallAmp>
+	| rowNames columnNames dataFrame newColumns expected aCollection |
+	rowNames := #('01:10' '01:30' '01:50' '02:10' '02:30')
+		collect: #asTime.
+	columnNames := #(temperature precipitation type).
+	dataFrame := DataFrame
+		withRows:
+			#(#(2.4 true rain) #(0.5 true rain) #(-1.2 true snow) #(-2.3 false -) #(3.2 true rain))
+		rowNames: rowNames
+		columnNames: columnNames.
+	newColumns := #(#(1 1 1 1 1) #(2 2 2 2 2)).
+	(DataFrame
+		withRows: #(#(2.4 2 1) #(0.5 2 1) #(-1.2 2 1) #(-2.3 2 1) #(3.2 2 1))
+		rowNames: rowNames
+		columnNames: columnNames) contents.
+	aCollection := (dataFrame columnsFrom: 3 to: 2 put: newColumns) range.
+	self assert:
+		aCollection class equals: DataSeries
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testColumnsFromToPut_amp_D0_A175 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #firstQuartile` in method: `DataFrame >> #firstQuartile`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#firstQuartile#17#56'>
+	<madeBySmallAmp>
+	| rowNames columnNames dataFrame newColumns expected aCollection |
+	rowNames := #('01:10' '01:30' '01:50' '02:10' '02:30')
+		collect: #asTime.
+	#('01:10' '01:30' '01:50' '02:10' '02:30') collect: #asTime.
+	columnNames := #(temperature precipitation type).
+	dataFrame := DataFrame
+		withRows:
+			#(#(2.4 true rain) #(0.5 true rain) #(-1.2 true snow) #(-2.3 false -) #(3.2 true rain))
+		rowNames: rowNames
+		columnNames: columnNames.
+	newColumns := #(#(1 1 1 1 1) #(2 2 2 2 2)).
+	aCollection := (DataFrame
+		withRows: #(#(2.4 2 1) #(0.5 2 1) #(-1.2 2 1) #(-2.3 2 1) #(3.2 2 1))
+		rowNames: rowNames
+		columnNames: columnNames) firstQuartile.
+	self assert:
+		aCollection class equals: DataSeries.
+	dataFrame columnsFrom: 3 to: 2 put: newColumns
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testColumnsFromToPut_amp_O23 [
+	<smallAmpCoveres:
+		'ReplaceIfFalseReceiverWithTrueOperator#DataFrame#columnsFrom:to:put:#82#177'>
+	<madeBySmallAmp>
+	| rowNames columnNames dataFrame newColumns expected |
+	rowNames := #('01:10' '01:30' '01:50' '02:10' '02:30')
+		collect: #asTime.
+	columnNames := #(temperature precipitation type).
+	dataFrame := DataFrame
+		withRows:
+			#(#(2.4 true rain) #(0.5 true rain) #(-1.2 true snow) #(-2.3 false -) #(3.2 true rain))
+		rowNames: rowNames
+		columnNames: columnNames.
+	newColumns := #(#(2 2 2 1 2) #(1 2 1 2 1)).
+	expected := DataFrame
+		withRows: #(#(2.4 2 1) #(0.5 3 2) #(-1.2 1 1) #(-2.3 1 1) #(3.2 1 2))
+		rowNames: rowNames
+		columnNames: columnNames.
+	self
+		should: [ dataFrame columnsFrom: 2 to: 2 put: newColumns ]
+		raise: SizeMismatch
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testColumnsFromTo_amp_T68_O3 [
+	"I test correctness of: 
+
+- `begin < end
+	ifTrue: [ (begin to: end) asArray ]
+	ifFalse: [ (end to: begin) asArray reverse ]` in method: `DataFrame >> #columnsFrom:to:` when {#begin->3. #end->1}
+
+"
+
+	<smallAmpCoveres:
+		'ReplaceIfTrueIfFalseReceiverWithTrueOperator#DataFrame#columnsFrom:to:#52#147'>
+	<madeBySmallAmp>
+	| actualDataFrame expectedDataFrame |
+	expectedDataFrame := DataFrame
+		withRows: #(#(1.609 true) #(2.789 true) #(8.788 false)).
+	DataFrame withRows: #(#(2 3) #(4 2)).
+	expectedDataFrame columnNames: #(Population BeenThere).
+	actualDataFrame := df columnsFrom: 3 to: 1.
+	self assert: actualDataFrame dimensions equals: 3 @ 3
+]
+
 { #category : #tests }
 DataFrameTest >> testColumnsPut [
 	| rowNames columnNames dataFrame newColumns expected |
@@ -832,6 +1635,24 @@ DataFrameTest >> testCreateDataFrameWith3ColumnsAndNoRows [
 	self assert: dataFrame dimensions equals: 0@3.
 	self assert: dataFrame rowNames equals: #() asOrderedCollection.
 	self assert: dataFrame columnNames equals: #(1 2 3) asOrderedCollection.
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testCreateDataFrameWith3ColumnsAndNoRows_amp_A95_L10_A70 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #thirdQuartile` in method: `DataFrame >> #thirdQuartile`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#thirdQuartile#17#56'>
+	<madeBySmallAmp>
+	| dataFrame aCollection |
+	dataFrame := DataFrame new: 0 @ 0.
+	aCollection := dataFrame thirdQuartile.
+	self assert:
+		aCollection class equals: DataSeries.
+	dataFrame contents
 ]
 
 { #category : #tests }
@@ -928,6 +1749,43 @@ DataFrameTest >> testCreateDataFrameWithColumnsRowNamesColumnNames [
 	expectedValues := DataFrameInternal withColumns: columns.
 	
 	self assert: dataFrame contents equals: expectedValues.
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testCreateDataFrameWithColumnsRowNames_amp_A42 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #mode` in method: `DataFrame >> #mode`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#mode#8#38'>
+	<madeBySmallAmp>
+	| columns rowNames dataFrame expectedValues aCollection |
+	aCollection := df mode.
+	self assert:
+		aCollection class equals: DataSeries.
+	columns := #(#('Robb Stark' 'Jon Snow' 'Eddard Stark') #(3 4 1) #(true false true)).
+	rowNames := #(A B C) asOrderedCollection.
+	dataFrame := DataFrame withColumns: columns rowNames: rowNames
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testCreateDataFrameWithColumnsRowNames_amp_T33_A72 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #thirdQuartile` in method: `DataFrame >> #thirdQuartile`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#thirdQuartile#17#56'>
+	<madeBySmallAmp>
+	| columns rowNames dataFrame expectedValues aCollection |
+	columns := #(#('Robb Stark' 'Jon Snow' 'Eddard Stark') #(3 4 1) #(true false true)).
+	rowNames := #(A B C) asOrderedCollection.
+	aCollection := (DataFrame withRows: #(#(1 2) #(3 4))) thirdQuartile.
+	self assert:
+		aCollection class equals: DataSeries
 ]
 
 { #category : #tests }
@@ -1117,6 +1975,210 @@ DataFrameTest >> testCreateEmptyDataFrameWithColumnsRowNamesColumnNames [
 	self assert: dataFrame class equals: DataFrame.
 ]
 
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testCreateEmptyDataFrameWithColumnsRowNamesColumnNames_amp_A109 [
+	"I test correctness of: 
+
+- `^ series` in method: `DataFrame >> #applyToAllColumns:` when {#series->nil}
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#firstQuartile#17#56'>
+	<madeBySmallAmp>
+	| dataFrame aCollection |
+	aCollection := (DataFrame
+		withColumns: #()
+		rowNames: #()
+		columnNames: #()) firstQuartile.
+	self assert:
+		aCollection class equals: DataSeries
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testCreateEmptyDataFrameWithColumnsRowNamesColumnNames_amp_A115_A124 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #range` in method: `DataFrame >> #range`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#range#9#40'>
+	<madeBySmallAmp>
+	| dataFrame aCollection |
+	dataFrame := DataFrame
+		withColumns: #()
+		rowNames: #()
+		columnNames: #().
+	aCollection := dataFrame
+		rowNames;
+		range.
+	self assert:
+		aCollection class equals: DataSeries
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testCreateEmptyDataFrameWithColumnsRowNamesColumnNames_amp_A115_A124_A118 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #stdev` in method: `DataFrame >> #stdev`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#stdev#9#40'>
+	<madeBySmallAmp>
+	| dataFrame aCollection |
+	dataFrame := DataFrame
+		withColumns: #()
+		rowNames: #()
+		columnNames: #().
+	aCollection := dataFrame stdev.
+	self assert:
+		aCollection class equals: DataSeries.
+	dataFrame
+		rowNames;
+		range
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testCreateEmptyDataFrameWithColumnsRowNames_amp_A113_A62 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #range` in method: `DataFrame >> #range`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#range#9#40'>
+	<madeBySmallAmp>
+	| dataFrame aCollection |
+	dataFrame := DataFrame withColumns: #() rowNames: #().
+	aCollection := dataFrame range.
+	self assert:
+		aCollection class equals: DataSeries.
+	dataFrame size
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testCreateEmptyDataFrameWithColumnsRowNames_amp_A42 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #mode` in method: `DataFrame >> #mode`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#mode#8#38'>
+	<madeBySmallAmp>
+	| dataFrame aCollection |
+	aCollection := df mode.
+	self assert:
+		aCollection class equals: DataSeries.
+	dataFrame := DataFrame withColumns: #() rowNames: #()
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testCreateEmptyDataFrameWithColumnsRowNames_amp_A42_A218 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #interquartileRange` in method: `DataFrame >> #interquartileRange`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#interquartileRange#22#66'>
+	<madeBySmallAmp>
+	| dataFrame aCollection |
+	df mode.
+	aCollection := (DataFrame withColumns: #() rowNames: #())
+		interquartileRange.
+	self assert:
+		aCollection class equals: DataSeries
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testCreateEmptyDataFrameWithColumnsRowNames_amp_A66 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #min` in method: `DataFrame >> #min`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#min#7#36'>
+	<madeBySmallAmp>
+	| dataFrame aCollection |
+	aCollection := (DataFrame withColumns: #() rowNames: #()) min.
+	self assert:
+		aCollection class equals: DataSeries
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testCreateEmptyDataFrameWithColumns_amp_A119 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #interquartileRange` in method: `DataFrame >> #interquartileRange`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#interquartileRange#22#66'>
+	<madeBySmallAmp>
+	| dataFrame aCollection |
+	aCollection := (DataFrame withColumns: #()) interquartileRange.
+	self assert:
+		aCollection class equals: DataSeries
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testCreateEmptyDataFrameWithColumns_amp_A18_A133 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #average` in method: `DataFrame >> #average`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#average#11#44'>
+	<madeBySmallAmp>
+	| dataFrame aCollection |
+	df numberOfRows.
+	aCollection := (DataFrame withColumns: #()) average.
+	self assert:
+		aCollection class equals: DataSeries
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testCreateEmptyDataFrameWithColumns_amp_A71_A130_A111 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #max` in method: `DataFrame >> #max`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#max#7#36'>
+	<madeBySmallAmp>
+	| dataFrame aCollection |
+	dataFrame := DataFrame withColumns: #().
+	aCollection := dataFrame max.
+	self
+		assert:
+			aCollection class equals: DataSeries;
+		should: [ dataFrame columnAt: 1 ] raise: SubscriptOutOfBounds
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testCreateEmptyDataFrameWithColumns_amp_A71_A130_A64 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #average` in method: `DataFrame >> #average`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#average#11#44'>
+	<madeBySmallAmp>
+	| dataFrame aCollection |
+	dataFrame := DataFrame withColumns: #().
+	aCollection := dataFrame average.
+	self
+		assert:
+			aCollection class equals: DataSeries;
+		should: [ dataFrame columnAt: 1 ] raise: SubscriptOutOfBounds
+]
+
 { #category : #tests }
 DataFrameTest >> testCreateEmptyDataFrameWithRowNames [
 	| rowNames dataFrame |
@@ -1145,6 +2207,63 @@ DataFrameTest >> testCreateEmptyDataFrameWithRowNamesColumnNames [
 	self assert: dataFrame dimensions equals: 3@3.
 	self assert: dataFrame rowNames equals: rowNames.
 	self assert: dataFrame columnNames equals: columnNames.
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testCreateEmptyDataFrameWithRowNames_amp_A61 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #range` in method: `DataFrame >> #range`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#range#9#40'>
+	<madeBySmallAmp>
+	| rowNames dataFrame aCollection |
+	rowNames := #(A B C) asOrderedCollection.
+	aCollection := (DataFrame withRowNames: rowNames) range.
+	self assert:
+		aCollection class equals: DataSeries
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testCreateEmptyDataFrameWithRowNames_amp_A61_A122 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #average` in method: `DataFrame >> #average`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#average#11#44'>
+	<madeBySmallAmp>
+	| rowNames dataFrame aCollection |
+	rowNames := #(A B C) asOrderedCollection.
+	dataFrame := DataFrame withRowNames: rowNames.
+	aCollection := dataFrame
+		range;
+		average.
+	self assert:
+		aCollection class equals: DataSeries
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testCreateEmptyDataFrameWithRowNames_amp_A61_A173 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #interquartileRange` in method: `DataFrame >> #interquartileRange`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#interquartileRange#22#66'>
+	<madeBySmallAmp>
+	| rowNames dataFrame aCollection |
+	rowNames := #(A B C) asOrderedCollection.
+	dataFrame := DataFrame withRowNames: rowNames.
+	aCollection := dataFrame
+		range;
+		interquartileRange.
+	self assert:
+		aCollection class equals: DataSeries
 ]
 
 { #category : #tests }
@@ -1181,6 +2300,38 @@ DataFrameTest >> testCreateEmptyDataFrameWithRowsRowNamesColumnNames [
 	dataFrame := DataFrame withRows: #() rowNames: #() columnNames: #().
 	
 	self assert: dataFrame class equals: DataFrame.
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testCreateEmptyDataFrameWithRowsRowNamesColumnNames_amp_A108 [
+	<smallAmpCoveres: 'ReplaceIfFalseReceiverWithTrueOperator#DataFrame#rowAt:put:#31#100'>
+	<madeBySmallAmp>
+	| dataFrame |
+	dataFrame := DataFrame withRows: #() rowNames: #() columnNames: #().
+	self
+		should: [ dataFrame rowAt: 3 put: #(#Dubai 2.789 true) ]
+		raise: SizeMismatch
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testCreateEmptyDataFrame_amp_T14_A170_A228 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #max` in method: `DataFrame >> #max`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#max#7#36'>
+	<madeBySmallAmp>
+	| dataFrame aCollection |
+	dataFrame := DataFrame
+		withColumns: #() rowNames: #();
+		new.
+	aCollection := dataFrame
+		size;
+		max.
+	self assert:
+		aCollection class equals: DataSeries
 ]
 
 { #category : #tests }
@@ -1308,6 +2459,83 @@ DataFrameTest >> testEquality [
 	self assert: (df1 = df2).
 ]
 
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testEquality_amp_A115 [
+	"I test correctness of: 
+
+- `^ 5` in method: `DataFrame >> #defaultHeadTailSize`
+
+- `self numberOfRows > aNumber` in method: `DataFrame >> #head:`
+
+- `rows - n + 1` in method: `DataFrame >> #tail:` when {#rows->2. #n->2}
+
+- `^ series` in method: `DataFrame >> #applyToAllColumns:` when {#series->nil}
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#stdev#9#40'>
+	<madeBySmallAmp>
+	| df1 df2 aCollection |
+	df1 := DataFrame withRows: #(#(1 2) #(3 4)).
+	self
+		assert: df1 defaultHeadTailSize equals: 5;
+		assert: df1 head class equals: DataFrame;
+		assert: df1 head head tail class equals: DataFrame.
+	aCollection := df1 stdev.
+	self assert:
+		aCollection class equals: DataSeries.
+	df2 := DataFrame withRows: #(#(1 2) #(3 4))
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testEquality_amp_A124_A186_A225 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #max` in method: `DataFrame >> #max`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#max#7#36'>
+	<madeBySmallAmp>
+	| df1 df2 aCollection |
+	df2 := DataFrame
+		withRows: #(#(1 2) #(3 4));
+		withRows: #(#(1 2) #(3 4)).
+	aCollection := df2
+		min;
+		max.
+	self
+		assert:
+			aCollection class equals: DataSeries;
+		should: [ df2 row: '1' ] raise: LibrarySymbolNotFoundError
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testEquality_amp_T70_A68 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #min` in method: `DataFrame >> #min`
+
+- `rows > aNumber
+	ifTrue: [ n := aNumber ]
+	ifFalse: [ n := rows ]` in method: `DataFrame >> #tail:` when {#rows->7. #aNumber->5. #n->nil}
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#min#7#36'>
+	<madeBySmallAmp>
+	| df1 df2 aCollection |
+	aCollection := (DataFrame withRows: #(#(1 2) #(3 4))) min.
+	self assert:
+		aCollection class equals: DataSeries.
+	df2 := DataFrame
+		withRows:
+			#(#('K3' 'B0' false) #('K2' 'B1' true) #('K2' 'B2' false) #('K1' 'B3' true) #('K3' 'B4' false) #('K3' 'B5' true) #('K0' 'B6' false))
+		rowNames: #('1K3' '1K2' '2K2' '1K1' '2K3' '3K3' '1K0')
+		columnNames: #(Key C D).
+	self assert: df2 tail dimensions equals: 5 @ 3
+]
+
 { #category : #'find-select' }
 DataFrameTest >> testFindAllAtColumn [
 
@@ -1388,6 +2616,24 @@ DataFrameTest >> testIndexOfColumnNamedNotFound [
 	self
 		should: [ df indexOfColumnNamed: #NoSuchColumn ]
 		raise: LibrarySymbolNotFoundError
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testIndexOfColumnNamedNotFound_amp_A2_A122 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #mode` in method: `DataFrame >> #mode`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#mode#8#38'>
+	<madeBySmallAmp>
+	| aCollection |
+	aCollection := df
+		rightJoin: DataFrame new;
+		mode.
+	self assert:
+		aCollection class equals: DataSeries
 ]
 
 { #category : #tests }
@@ -1582,6 +2828,49 @@ DataFrameTest >> testInnerJoinOnEmptyWithColumnNames [
 	self assert: (df innerJoin: df2) equals: expected.
 ]
 
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testInnerJoinOnEmpty_amp_A19_R2_T10 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #median` in method: `DataFrame >> #median`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#median#10#42'>
+	<madeBySmallAmp>
+	| df2 expected aCollection |
+	aCollection := (df
+		withIndexCollect: [ :row :index | 
+			row at: #City put: (row at: #City) asUppercase.
+			row at: #Population put: (row at: #Population) asInteger + index.
+			row removeAt: #BeenThere.
+			row ]) median.
+	self assert:
+		aCollection class equals: DataSeries.
+	df2 := DataFrame new
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testInnerJoinOnEmpty_amp_A73_A24_A238 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #interquartileRange` in method: `DataFrame >> #interquartileRange`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#interquartileRange#22#66'>
+	<madeBySmallAmp>
+	| df2 expected aCollection |
+	df rowAt: 2.
+	df2 := DataFrame new.
+	aCollection := df2
+		withIndexDo: [  ];
+		interquartileRange.
+	self assert:
+		aCollection class equals: DataSeries.
+	expected := DataFrame withColumnNames: #(City Population BeenThere)
+]
+
 { #category : #splitjoin }
 DataFrameTest >> testInnerJoinOnLeftOnRight [
 
@@ -1746,6 +3035,49 @@ DataFrameTest >> testInnerJoinOnLeftOnRightOnEmptyWithColumnNames [
 	
 	expected := DataFrame withColumnNames: #(Key C D A B).
 	self assert: (df2 innerJoin: df onLeft: 'Key' onRight: 'Key') equals: expected.
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testInnerJoinOnLeftOnRightOnEmpty_amp_A152 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #min` in method: `DataFrame >> #min`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#min#7#36'>
+	<madeBySmallAmp>
+	| df2 aCollection |
+	aCollection := (DataFrame
+		withRows: #(#('K0' 'A0' 0) #('K1' 'A1' 1) #('K2' 'A2' 2))
+			rowNames: #('1K0' '1K1' '1K2')
+			columnNames: #(Key A B);
+		new) min.
+	self assert:
+		aCollection class equals: DataSeries
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testInnerJoinOnLeftOnRightOnEmpty_amp_A73_A257_A211 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #range` in method: `DataFrame >> #range`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#range#9#40'>
+	<madeBySmallAmp>
+	| df2 aCollection |
+	(DataFrame
+		withRows: #(#('K0' 'A0' 0) #('K1' 'A1' 1) #('K2' 'A2' 2))
+		rowNames: #('1K0' '1K1' '1K2')
+		columnNames: #(Key A B)) indexOfColumnNamed: 'Key_y' ifAbsent: [  ].
+	df2 := DataFrame new.
+	aCollection := df2 range.
+	self
+		assert:
+			aCollection class equals: DataSeries;
+		should: [ df2 rowsAt: #(1 3) ] raise: SubscriptOutOfBounds
 ]
 
 { #category : #splitjoin }
@@ -2158,6 +3490,35 @@ DataFrameTest >> testLeftJoinOnLeftOnRightNoIntersection [
 	self assert: (df leftJoin: df2 onLeft: 'Key' onRight: 'Key') equals: expected.
 ]
 
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testLeftJoinOnLeftOnRightNoIntersection_amp_A61_A85 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #median` in method: `DataFrame >> #median`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#median#10#42'>
+	<madeBySmallAmp>
+	| df2 expected aCollection |
+	df := DataFrame
+		withRows: #(#('K0' 'A0' 0) #('K1' 'A1' 1) #('K2' 'A2' 2))
+		rowNames: #('1K0' '1K1' '1K2')
+		columnNames: #(Key A B).
+	aCollection := df median.
+	self assert:
+		aCollection class equals: DataSeries.
+	df head.
+	expected := DataFrame
+		withRows:
+			#(#('L0' 'B0' true) #('L1' 'B1' false) #('L2' 'B2' true) #('L3' 'B3' false))
+			rowNames: #('1K0' '1K1' '1K2' '1K3')
+			columnNames: #(Key C D);
+		withRows:
+			#(#('K0' 'A0' 0 nil nil) #('K1' 'A1' 1 nil nil) #('K2' 'A2' 2 nil nil))
+			columnNames: #(Key A B C D)
+]
+
 { #category : #splitjoin }
 DataFrameTest >> testLeftJoinOnLeftOnRightOnEmpty [
 
@@ -2201,6 +3562,72 @@ DataFrameTest >> testLeftJoinOnLeftOnRightOnEmptyWithColumnNames [
 	
 	expected := DataFrame withColumnNames: #(Key C D A B).
 	self assert: (df2 leftJoin: df onLeft: 'Key' onRight: 'Key') equals: expected.
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testLeftJoinOnLeftOnRightOnEmpty_amp_A122_A241 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #stdev` in method: `DataFrame >> #stdev`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#stdev#9#40'>
+	<madeBySmallAmp>
+	| df2 aCollection |
+	df2 := DataFrame
+		withRows: #(#('K0' 'A0' 0) #('K1' 'A1' 1) #('K2' 'A2' 2))
+			rowNames: #('1K0' '1K1' '1K2')
+			columnNames: #(Key A B);
+		new.
+	aCollection := df2
+		head;
+		stdev.
+	self assert:
+		aCollection class equals: DataSeries
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testLeftJoinOnLeftOnRightOnEmpty_amp_A125 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #average` in method: `DataFrame >> #average`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#average#11#44'>
+	<madeBySmallAmp>
+	| df2 aCollection |
+	aCollection := (DataFrame
+		withRows: #(#('K0' 'A0' 0) #('K1' 'A1' 1) #('K2' 'A2' 2))
+			rowNames: #('1K0' '1K1' '1K2')
+			columnNames: #(Key A B);
+		new) average.
+	self assert:
+		aCollection class equals: DataSeries
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testLeftJoinOnLeftOnRightOnEmpty_amp_A153_A142_A124 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #range` in method: `DataFrame >> #range`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#range#9#40'>
+	<madeBySmallAmp>
+	| df2 aCollection |
+	df2 := DataFrame
+		withRows: #(#('K0' 'A0' 0) #('K1' 'A1' 1) #('K2' 'A2' 2))
+			rowNames: #('1K0' '1K1' '1K2')
+			columnNames: #(Key A B);
+		new.
+	aCollection := df2 range.
+	self
+		assert:
+			aCollection class equals: DataSeries;
+		should: [ df2 rowAt: 3 ] raise: SubscriptOutOfBounds
 ]
 
 { #category : #splitjoin }
@@ -2336,6 +3763,33 @@ DataFrameTest >> testLeftJoinOnSelf [
 	self assert: (df leftJoin: df) equals: expected.
 ]
 
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testLeftJoinOn_amp_A77 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #median` in method: `DataFrame >> #median`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#median#10#42'>
+	<madeBySmallAmp>
+	| df2 expected aCollection |
+	aCollection := (DataFrame
+		withRows: #(#('K0' 'A0' 0) #('K1' 'A1' 1) #('K2' 'A2' 2))
+		rowNames: #('1K0' '1K1' '1K2')
+		columnNames: #(Key A B)) median.
+	self assert:
+		aCollection class equals: DataSeries.
+	expected := DataFrame
+		withRows:
+			#(#('K0' 'B0' true) #('K1' 'B1' false) #('K2' 'B2' true) #('K3' 'B3' false))
+			rowNames: #('1K0' '1K1' '1K2' '1K3')
+			columnNames: #(Key C D);
+		withRows:
+			#(#('K0' 'A0' 0 'B0' true) #('K1' 'A1' 1 'B1' false) #('K2' 'A2' 2 'B2' true))
+			columnNames: #(Key A B C D)
+]
+
 { #category : #splitjoin }
 DataFrameTest >> testLeftJoinRowMismatch [
 	| df2 expected |
@@ -2376,6 +3830,19 @@ DataFrameTest >> testLeftJoinSameColumnNames [
 		columnNames: #(City Population_x BeenThere Capital Population_y).
 	
 	self assert: (df leftJoin: df2) equals: expected.
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testLeftJoin_amp_A100_T45_A130 [
+	<smallAmpCoveres: 'ReplaceIfFalseReceiverWithTrueOperator#DataFrame#rowAt:put:#31#100'>
+	<madeBySmallAmp>
+	| df2 expected |
+	df2 := DataFrame
+		withRows: #(#(false 0) #(false 1) #(true 2))
+		rowNames: #(A B C)
+		columnNames: #(Capital TimesVisited).
+	df2 indexOfColumnNamed: #City ifAbsent: [  ].
+	self should: [ df2 rowAt: 2 put: #(#X #Y #Z) ] raise: SizeMismatch
 ]
 
 { #category : #splitjoin }
@@ -2483,6 +3950,40 @@ DataFrameTest >> testOuterJoinOnEmptyWithColumnNames [
 	self assert: (df outerJoin: df2) equals: expected.
 ]
 
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testOuterJoinOnEmpty_amp_A50_A133 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #min` in method: `DataFrame >> #min`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#min#7#36'>
+	<madeBySmallAmp>
+	| df2 aCollection |
+	df asArrayOfRows.
+	aCollection := DataFrame new min.
+	self assert:
+		aCollection class equals: DataSeries
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testOuterJoinOnEmpty_amp_A50_A181 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #stdev` in method: `DataFrame >> #stdev`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#stdev#9#40'>
+	<madeBySmallAmp>
+	| df2 aCollection |
+	df asArrayOfRows.
+	aCollection := DataFrame new stdev.
+	self assert:
+		aCollection class equals: DataSeries
+]
+
 { #category : #splitjoin }
 DataFrameTest >> testOuterJoinOnLeftOnRight [
 
@@ -2563,6 +4064,31 @@ DataFrameTest >> testOuterJoinOnLeftOnRightDuplicateKeys [
 	self assert: (df outerJoin: df2 onLeft: 'Key' onRight: 'Key') equals: expected.
 ]
 
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testOuterJoinOnLeftOnRightDuplicateKeys_amp_O90_T75_A82 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #median` in method: `DataFrame >> #median`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#median#10#42'>
+	<madeBySmallAmp>
+	| df2 expected aCollection |
+	df := DataFrame
+		withRows:
+			#(#('K0' 'A0' 5) #('K1' 'A1' 6) #('K1' 'A2' 0) #('K2' 'A3' 1) #('K0' 'A4' 2) #('K5' 'A5' 3) #('K6' 'A6' 4))
+		rowNames: #('1K0' '1K1' '2K1' '1K2' '2K0' '1K5' '1K6')
+		columnNames: #(Key A B).
+	aCollection := df median.
+	self
+		assert:
+			aCollection class equals: DataSeries;
+		should: [ df2 := df
+				withIndexReject: [ :row :index | (row at: #Population) > 2 and: [ index % 2 = 0 ] ] ]
+			raise: KeyNotFound
+]
+
 { #category : #splitjoin }
 DataFrameTest >> testOuterJoinOnLeftOnRightMissingKey [
 
@@ -2626,6 +4152,47 @@ DataFrameTest >> testOuterJoinOnLeftOnRightNoIntersection [
 	self assert: (df outerJoin: df2 onLeft: 'Key' onRight: 'Key') equals: expected.
 ]
 
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testOuterJoinOnLeftOnRightNoIntersection_amp [
+	"I test correctness of: 
+
+- `^ 5` in method: `DataFrame >> #defaultHeadTailSize`
+
+- `^ self head: self defaultHeadTailSize` in method: `DataFrame >> #head`
+
+- `^ self rowsAt: (rows - n + 1 to: rows)` in method: `DataFrame >> #tail:`
+
+- `(rows - n)` in method: `DataFrame >> #tail:` when {#rows->3. #n->3}
+
+- `rows > aNumber
+	ifTrue: [ n := aNumber ]
+	ifFalse: [ n := rows ]` in method: `DataFrame >> #tail:` when {#rows->7. #aNumber->5. #n->nil}
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#head#9#45'>
+	<madeBySmallAmp>
+	| df2 expected |
+	df := DataFrame
+		withRows: #(#('K0' 'A0' 0) #('K1' 'A1' 1) #('K2' 'A2' 2))
+		rowNames: #('1K0' '1K1' '1K2')
+		columnNames: #(Key A B).
+	self
+		assert: df defaultHeadTailSize equals: 5;
+		assert: df head class equals: DataFrame;
+		assert: df head head tail class equals: DataFrame;
+		assert: df head tail numberOfRows equals: 3.
+	expected := DataFrame
+		withRows:
+			#(#('L0' 'B0' true) #('L1' 'B1' false) #('L2' 'B2' true) #('L3' 'B3' false))
+			rowNames: #('1K0' '1K1' '1K2' '1K3')
+			columnNames: #(Key C D);
+		withRows:
+			#(#('K0' 'A0' 0 nil nil) #('K1' 'A1' 1 nil nil) #('K2' 'A2' 2 nil nil) #('L0' nil nil 'B0' true) #('L1' nil nil 'B1' false) #('L2' nil nil 'B2' true) #('L3' nil nil 'B3' false))
+			columnNames: #(Key A B C D).
+	self assert: expected tail dimensions equals: 5 @ 5
+]
+
 { #category : #splitjoin }
 DataFrameTest >> testOuterJoinOnLeftOnRightOnEmpty [
 
@@ -2676,6 +4243,27 @@ DataFrameTest >> testOuterJoinOnLeftOnRightOnEmptyWithColumnNames [
 	self assert: (df2 outerJoin: df onLeft: 'Key' onRight: 'Key') equals: expected.
 ]
 
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testOuterJoinOnLeftOnRightOnEmpty_amp_A50_A246 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #interquartileRange` in method: `DataFrame >> #interquartileRange`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#interquartileRange#22#66'>
+	<madeBySmallAmp>
+	| df2 aCollection |
+	df = DataFrame new.
+	aCollection := (DataFrame
+		withRows: #(#('K0' 'A0' 0) #('K1' 'A1' 1) #('K2' 'A2' 2))
+			rowNames: #('1K0' '1K1' '1K2')
+			columnNames: #(Key A B);
+		new) interquartileRange.
+	self assert:
+		aCollection class equals: DataSeries
+]
+
 { #category : #splitjoin }
 DataFrameTest >> testOuterJoinOnLeftOnRightOnSelf [
 	
@@ -2697,6 +4285,32 @@ DataFrameTest >> testOuterJoinOnLeftOnRightOnSelf [
 		columnNames: #(Key A_x B_x A_y B_y).
 		
 	self assert: (df outerJoin: df onLeft: 'Key' onRight: 'Key') equals: expected.
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testOuterJoinOnLeftOnRightOnSelf_amp_A93_A143_A75 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #firstQuartile` in method: `DataFrame >> #firstQuartile`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#firstQuartile#17#56'>
+	<madeBySmallAmp>
+	| expected aCollection |
+	df := DataFrame
+		withRows: #(#('K0' 'A0' 0) #('K1' 'A1' 1) #('K2' 'A2' 2))
+		rowNames: #('1K0' '1K1' '1K2')
+		columnNames: #(Key A B).
+	aCollection := df firstQuartile.
+	self assert:
+		aCollection class equals: DataSeries.
+	df
+		tail;
+		numberOfRows.
+	expected := DataFrame
+		withRows: #(#('K0' 'A0' 0 'A0' 0) #('K1' 'A1' 1 'A1' 1) #('K2' 'A2' 2 'A2' 2))
+		columnNames: #(Key A_x B_x A_y B_y)
 ]
 
 { #category : #splitjoin }
@@ -2905,6 +4519,25 @@ DataFrameTest >> testRejectEntireDataFrame [
 	self assert: actual equals: expected.
 ]
 
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testRejectEntireDataFrame_amp_A120_A185 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #variance` in method: `DataFrame >> #variance`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#variance#12#46'>
+	<madeBySmallAmp>
+	| actual expected aCollection |
+	expected := DataFrame withRows: #().
+	aCollection := (df reject: [ :row | (row at: #Population) < 10 ])
+		variance.
+	self assert:
+		aCollection class equals: DataSeries.
+	df indexOfColumnNamed: 'Population'
+]
+
 { #category : #removing }
 DataFrameTest >> testRemoveColumn [
 
@@ -3044,6 +4677,29 @@ DataFrameTest >> testRemoveColumnsOfRowElementsSatisfingOnRowNamed [
 	self assert: (df removeColumnsOfRowElementsSatisfing: aBlock onRowNamed: 'B') equals: expected.
 ]
 
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testRemoveColumnsOfRowElementsSatisfingOnRowNamed_amp_A537 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #firstQuartile` in method: `DataFrame >> #firstQuartile`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#firstQuartile#17#56'>
+	<madeBySmallAmp>
+	| expected aBlock aCollection |
+	df := DataFrame
+		withRows: #(#(1 2 3) #(Dubai 4 5.0) #(nil 8.788 false)).
+	df
+		rowNames: #(A B C);
+		columnNames: #(X Y Z).
+	expected := DataFrame withRows: #(#(2) #(4) #(8.788)).
+	aCollection := (expected rowNames: #(A B C)) firstQuartile.
+	self assert:
+		aCollection class equals: DataSeries.
+	expected columnNames: #(Y)
+]
+
 { #category : #removing }
 DataFrameTest >> testRemoveColumnsWithNilsAtRow [
 
@@ -3090,6 +4746,33 @@ DataFrameTest >> testRemoveColumnsWithNilsAtRowNamed [
 	self assert: (df removeColumnsWithNilsAtRowNamed: #B) equals: expected.
 ]
 
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testRemoveColumnsWithNilsAtRowNamed_amp_A135_T34 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #thirdQuartile` in method: `DataFrame >> #thirdQuartile`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#thirdQuartile#17#56'>
+	<madeBySmallAmp>
+	| expected aCollection |
+	df := DataFrame
+		withRows: #(#('K0' 'A0' 0) #('K1' 'A1' 1) #('K2' 'A2' 2))
+		rowNames: #('1K0' '1K1' '1K2')
+		columnNames: #(Key A B).
+	aCollection := df
+		rowNames: #(A B C);
+		thirdQuartile.
+	self assert:
+		aCollection class equals: DataSeries.
+	df columnNames: #(City Population BeenThere).
+	expected := DataFrame withRows: #(#(Barcelona) #(Dubai) #(nil)).
+	expected
+		rowNames: #(A B C);
+		columnNames: #(City)
+]
+
 { #category : #removing }
 DataFrameTest >> testRemoveColumnsWithNilsAtRowOutOfRange [
 	self should: [ df removeColumnsWithNilsAtRow: 100 ] raise: SubscriptOutOfBounds.
@@ -3132,6 +4815,23 @@ DataFrameTest >> testRemoveRowAt [
 { #category : #removing }
 DataFrameTest >> testRemoveRowAtOutOfRange [
 	self should: [ df removeRowAt: 100 ] raise: SubscriptOutOfBounds.
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testRemoveRowAt_amp_A271 [
+	<smallAmpCoveres:
+		'ReplaceIfFalseReceiverWithTrueOperator#DataFrame#columnAt:put:#35#101'>
+	<madeBySmallAmp>
+	| expected |
+	expected := DataFrame
+		withRows: #(#(Barcelona 1.609 true) #(London 8.788 false)).
+	expected
+		rowNames: #(A C);
+		columnNames: #(City Population BeenThere).
+	df removeRowAt: 2.
+	self
+		should: [ df columnAt: 3 put: #('1.609' '2.789' '8.788') ]
+		raise: SizeMismatch
 ]
 
 { #category : #removing }
@@ -3293,6 +4993,27 @@ DataFrameTest >> testRenameColumnToNotFound [
 		raise: LibrarySymbolNotFoundError.
 ]
 
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testRenameColumnTo_amp_O9_T45_A118 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #thirdQuartile` in method: `DataFrame >> #thirdQuartile`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#thirdQuartile#17#56'>
+	<madeBySmallAmp>
+	| expected aCollection |
+	aCollection := (DataFrame
+		withRows:
+			#(#(#BeenThere 1.609 true) #(#Visited 2.789 true) #(#Barcelona 8.788 false))
+			rowNames: #(#Dubai #London #A)
+			columnNames: #(#B #C #City);
+		withRows: #()) thirdQuartile.
+	self assert:
+		aCollection class equals: DataSeries
+]
+
 { #category : #tests }
 DataFrameTest >> testRenameRowTo [
 	| expected |
@@ -3413,6 +5134,77 @@ DataFrameTest >> testRightJoinOnEmptyWithColumnNames [
 	self assert: (df rightJoin: df2) equals: expected.
 ]
 
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testRightJoinOnEmpty_amp_A121 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #interquartileRange` in method: `DataFrame >> #interquartileRange`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#interquartileRange#22#66'>
+	<madeBySmallAmp>
+	| df2 expected aCollection |
+	aCollection := DataFrame new interquartileRange.
+	self assert:
+		aCollection class equals: DataSeries.
+	expected := DataFrame withColumnNames: #(City Population BeenThere)
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testRightJoinOnEmpty_amp_A62 [
+	"I test correctness of: 
+
+- `^ series` in method: `DataFrame >> #applyToAllColumns:` when {#series->nil}
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#interquartileRange#22#66'>
+	<madeBySmallAmp>
+	| df2 expected aCollection |
+	aCollection := DataFrame new interquartileRange.
+	self assert:
+		aCollection class equals: DataSeries.
+	expected := DataFrame withColumnNames: #(City Population BeenThere)
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testRightJoinOnEmpty_amp_A62_A172 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #thirdQuartile` in method: `DataFrame >> #thirdQuartile`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#thirdQuartile#17#56'>
+	<madeBySmallAmp>
+	| df2 expected aCollection |
+	df2 := DataFrame new.
+	aCollection := df2
+		interquartileRange;
+		thirdQuartile.
+	self assert:
+		aCollection class equals: DataSeries.
+	expected := DataFrame withColumnNames: #(City Population BeenThere)
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testRightJoinOnEmpty_amp_A75 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #thirdQuartile` in method: `DataFrame >> #thirdQuartile`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#thirdQuartile#17#56'>
+	<madeBySmallAmp>
+	| df2 expected aCollection |
+	aCollection := DataFrame new thirdQuartile.
+	self assert:
+		aCollection class equals: DataSeries.
+	expected := DataFrame withColumnNames: #(City Population BeenThere)
+]
+
 { #category : #splitjoin }
 DataFrameTest >> testRightJoinOnLeftOnRight [
 
@@ -3518,6 +5310,33 @@ DataFrameTest >> testRightJoinOnLeftOnRightMissingKey [
 	self should: [df rightJoin: df2 onLeft: 'Key' onRight: 'Key'] raise: Error.
 ]
 
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testRightJoinOnLeftOnRightMissingKey_amp_T20_T69_A146 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #median` in method: `DataFrame >> #median`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#median#10#42'>
+	<madeBySmallAmp>
+	| df2 aCollection |
+	df := DataFrame
+		withRows:
+			#(#('K0' 'A0' 0 'K0' 'B0' true) #('K1' 'A1' 1 'K1' 'B1' false) #('K2' 'A2' 2 'K2' 'B2' true))
+		columnNames: #(Key1 A B Key2 C D).
+	aCollection := (DataFrame
+		withRows: #(#('K0' 'A0' 0) #('K1' 'A1' 1) #('K2' 'A2' 2))
+		rowNames: #('1K0' '1K1' '1K2')
+		columnNames: #(Key1 A B)) median.
+	self assert:
+		aCollection class equals: DataSeries.
+	df2 := DataFrame
+		withRows:
+			#(#('K0' 'A0' 0 nil nil) #('K1' 'A1' 1 nil nil) #('K2' 'A2' 2 nil nil) #('L0' nil nil 'B0' true) #('L1' nil nil 'B1' false) #('L2' nil nil 'B2' true) #('L3' nil nil 'B3' false))
+		columnNames: #(Key A B C D)
+]
+
 { #category : #splitjoin }
 DataFrameTest >> testRightJoinOnLeftOnRightNoIntersection [
 
@@ -3594,6 +5413,21 @@ DataFrameTest >> testRightJoinOnLeftOnRightOnEmptyWithColumnNames [
 		)
 		columnNames: #(Key C D A B).
 	self assert: (df2 rightJoin: df onLeft: 'Key' onRight: 'Key') equals: expected.
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testRightJoinOnLeftOnRightOnEmpty_amp_A208 [
+	<smallAmpCoveres: 'ReplaceIfFalseReceiverWithTrueOperator#DataFrame#rowAt:put:#31#100'>
+	<madeBySmallAmp>
+	| df2 |
+	df2 := DataFrame
+		withRows: #(#('K0' 'A0' 0) #('K1' 'A1' 1) #('K2' 'A2' 2))
+			rowNames: #('1K0' '1K1' '1K2')
+			columnNames: #(Key A B);
+		new.
+	self
+		should: [ df2 rowAt: 3 put: #(#London 8.788 false) ]
+		raise: SizeMismatch
 ]
 
 { #category : #splitjoin }
@@ -4193,6 +6027,24 @@ DataFrameTest >> testSelectEmptyDataFrame [
 	self assert: actual equals: expected.
 ]
 
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testSelectEmptyDataFrame_amp_T55_U1_A131 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #interquartileRange` in method: `DataFrame >> #interquartileRange`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#interquartileRange#22#66'>
+	<madeBySmallAmp>
+	| actual expected rowNames aCollection |
+	aCollection := (DataFrame withRows: #()) interquartileRange.
+	self assert:
+		aCollection class equals: DataSeries.
+	rowNames := #(#A #A).
+	self should: [ actual := df rows: rowNames ] raise: Error
+]
+
 { #category : #tests }
 DataFrameTest >> testSortBy [
 
@@ -4397,6 +6249,67 @@ DataFrameTest >> testWithColumnsRowNamesColumnNames_emptyColumns [
 	self assert: (dataframe row: '2') isEmpty
 ]
 
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testWithColumnsRowNames_amp_A114 [
+	"I test correctness of: 
+
+- `^ series` in method: `DataFrame >> #applyToAllColumns:` when {#series->nil}
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#max#7#36'>
+	<madeBySmallAmp>
+	| dataframe aCollection |
+	aCollection := (DataFrame
+		withColumns: #(#(1 2 3) #(4 5 6))
+		rowNames: #('one' 'two' 'three')) max.
+	self assert:
+		aCollection class equals: DataSeries
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testWithColumnsRowNames_amp_A114_A177_A68 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #min` in method: `DataFrame >> #min`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#min#7#36'>
+	<madeBySmallAmp>
+	| dataframe aCollection |
+	dataframe := DataFrame
+		withColumns: #(#(1 2 3) #(4 5 6))
+		rowNames: #('one' 'two' 'three').
+	aCollection := dataframe min.
+	self assert:
+		aCollection class equals: DataSeries.
+	dataframe
+		max;
+		size
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testWithColumnsRowNames_amp_A62_A137 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #firstQuartile` in method: `DataFrame >> #firstQuartile`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#firstQuartile#17#56'>
+	<madeBySmallAmp>
+	| dataframe aCollection |
+	dataframe := DataFrame
+		withColumns: #(#(1 2 3) #(4 5 6))
+		rowNames: #('one' 'two' 'three').
+	aCollection := dataframe
+		leftJoin: DataFrame new;
+		firstQuartile.
+	self assert:
+		aCollection class equals: DataSeries
+]
+
 { #category : #tests }
 DataFrameTest >> testWithColumnsRowNames_emptyColumns [
 	| dataframe |
@@ -4437,6 +6350,26 @@ DataFrameTest >> testWithIndexCollect [
 	
 	self assert: actualResult equals: expectedResult.
 	self assert: df equals: expectedDf.
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testWithIndexCollect_amp_A780_A609 [
+	<smallAmpCoveres: 'ReplaceIfFalseReceiverWithTrueOperator#DataFrame#rowAt:put:#31#100'>
+	<madeBySmallAmp>
+	| expectedDf expectedResult actualResult |
+	expectedDf := DataFrame
+		withRows: #(#(Barcelona 1.609 true) #(Dubai 2.789 true) #(London 8.788 false)).
+	expectedDf
+		rowNames: #(A B C);
+		columnNames: #(City Population BeenThere).
+	expectedResult := DataFrame
+		withRows: #(#('BARCELONA' 2) #('DUBAI' 4) #('LONDON' 11)).
+	expectedResult
+		rowNames: #(A B C);
+		columnNames: #(City Population).
+	self
+		should: [ expectedResult rowAt: 3 put: #(#Dubai 2.789 true) ]
+		raise: SizeMismatch
 ]
 
 { #category : #tests }
@@ -4551,6 +6484,94 @@ DataFrameTest >> testWithRowsRowNamesColumnNames [
 	self assert: ((dataframe column: 'one') at: '2') equals: 4.
 	self assert: ((dataframe column: 'two') at: '2') equals: 5.
 	self assert: ((dataframe column: 'three') at: '2') equals: 6
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testWithRowsRowNamesColumnNames_amp_A103_A71 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #min` in method: `DataFrame >> #min`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#min#7#36'>
+	<madeBySmallAmp>
+	| dataframe aCollection |
+	dataframe := DataFrame
+		withRows: #(#(1 2 3) #(4 5 6))
+		rowNames: #('1' '2')
+		columnNames: #('one' 'two' 'three').
+	aCollection := dataframe min.
+	self
+		assert:
+			aCollection class equals: DataSeries;
+		should: [ dataframe findAll: 'London' atColumn: 'City' ]
+			raise: LibrarySymbolNotFoundError
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testWithRowsRowNamesColumnNames_amp_A129 [
+	"I test correctness of: 
+
+- `^ series` in method: `DataFrame >> #applyToAllColumns:` when {#series->nil}
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#interquartileRange#22#66'>
+	<madeBySmallAmp>
+	| dataframe aCollection |
+	aCollection := (DataFrame
+		withRows: #(#(1 2 3) #(4 5 6))
+		rowNames: #('1' '2')
+		columnNames: #('one' 'two' 'three')) interquartileRange.
+	self assert:
+		aCollection class equals: DataSeries
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testWithRowsRowNamesColumnNames_amp_A92 [
+	"I test correctness of: 
+
+- `^ self head: self defaultHeadTailSize` in method: `DataFrame >> #head`
+
+- `rows - n + 1` in method: `DataFrame >> #tail:` when {#rows->2. #n->2}
+
+- `^ self applyToAllColumns: #thirdQuartile` in method: `DataFrame >> #thirdQuartile`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#thirdQuartile#17#56'>
+	<madeBySmallAmp>
+	| dataframe aCollection |
+	dataframe := DataFrame
+		withRows: #(#(1 2 3) #(4 5 6))
+		rowNames: #('1' '2')
+		columnNames: #('one' 'two' 'three').
+	self
+		assert: dataframe head class equals: DataFrame;
+		assert: dataframe head head tail class equals: DataFrame.
+	aCollection := dataframe thirdQuartile.
+	self assert:
+		aCollection class equals: DataSeries
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameTest >> testWithRowsRowNamesColumnNames_amp_U0_A91 [
+	"I test correctness of: 
+
+- `^ self applyToAllColumns: #variance` in method: `DataFrame >> #variance`
+
+"
+
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrame#variance#12#46'>
+	<madeBySmallAmp>
+	| dataframe aCollection |
+	aCollection := (DataFrame
+		withRows: #(#(6 6 6) #(6 6 6))
+		rowNames: #('1' '2')
+		columnNames: #('one' 'two' 'three')) variance.
+	self assert:
+		aCollection class equals: DataSeries
 ]
 
 { #category : #tests }
