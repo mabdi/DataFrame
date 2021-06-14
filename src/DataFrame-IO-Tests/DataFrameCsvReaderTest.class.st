@@ -59,30 +59,30 @@ DataFrameCsvReaderTest >> setUp [
 DataFrameCsvReaderTest >> testReadCsv [
 	| actualDataFrame |
 	actualDataFrame := DataFrame readFromCsv: commaCsvFile.
-	self assert: actualDataFrame equals: dataFrameWithoutRowNames.
-	
+	self assert: actualDataFrame equals: dataFrameWithoutRowNames
 ]
 
 { #category : #tests }
 DataFrameCsvReaderTest >> testReadCsvWithRowNames [
 	| actualDataFrame |
 	actualDataFrame := DataFrame readFromCsvWithRowNames: commaCsvFile.
-	self assert: actualDataFrame equals: dataFrameWithRowNames.
-	
+	self assert: actualDataFrame equals: dataFrameWithRowNames
 ]
 
 { #category : #tests }
 DataFrameCsvReaderTest >> testReadCsvWithRowNamesWithSeparatorTab [
 	| actualDataFrame |
-	actualDataFrame := DataFrame readFromCsvWithRowNames: tabCsvFile separator: Character tab.
-	self assert: actualDataFrame equals: dataFrameWithRowNames.
-	
+	actualDataFrame := DataFrame
+		readFromCsvWithRowNames: tabCsvFile
+		separator: Character tab.
+	self assert: actualDataFrame equals: dataFrameWithRowNames
 ]
 
 { #category : #tests }
 DataFrameCsvReaderTest >> testReadCsvWithSeparatorTab [
 	| actualDataFrame |
-	actualDataFrame := DataFrame readFromCsv: tabCsvFile withSeparator: Character tab.
-	self assert: actualDataFrame equals: dataFrameWithoutRowNames.
-	
+	actualDataFrame := DataFrame
+		readFromCsv: tabCsvFile
+		withSeparator: Character tab.
+	self assert: actualDataFrame equals: dataFrameWithoutRowNames
 ]

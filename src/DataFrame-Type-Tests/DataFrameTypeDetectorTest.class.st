@@ -43,6 +43,7 @@ DataFrameTypeDetectorTest >> testBooleanColumnWithNilsMixedCase [
 { #category : #tests }
 DataFrameTypeDetectorTest >> testBooleanColumnWithNumbers [
 	"Make sure that our boolean type detector doesn't return true for numbers"
+
 	| column expected actual |
 	column := #(1 2 3 4 5) asDataSeries.
 	expected := false.
@@ -53,6 +54,7 @@ DataFrameTypeDetectorTest >> testBooleanColumnWithNumbers [
 { #category : #tests }
 DataFrameTypeDetectorTest >> testBooleanColumnWithStrings [
 	"Make sure that our boolean type detector doesn't return true for strings that aren't true or false"
+
 	| column expected actual |
 	column := #('this' 'should' 'be' 'false') asDataSeries.
 	expected := false.
@@ -72,8 +74,10 @@ DataFrameTypeDetectorTest >> testColumnAllNils [
 { #category : #tests }
 DataFrameTypeDetectorTest >> testDateAndTimeColumn [
 	| column expected actual |
-	column := #('18 March 1996 1:10' '6 March 1996 2:30 am' '12 March 2019 14:24 am' '9 February 2019 00:00 am') asDataSeries.
-	expected := (#('1996-03-18T01:10:00' '1996-03-06T02:30:00' '2019-03-12T14:24:00' '2019-02-09T00:00:00') collect: #asDateAndTime) asDataSeries.
+	column := #('18 March 1996 1:10' '6 March 1996 2:30 am' '12 March 2019 14:24 am' '9 February 2019 00:00 am')
+		asDataSeries.
+	expected := (#('1996-03-18T01:10:00' '1996-03-06T02:30:00' '2019-03-12T14:24:00' '2019-02-09T00:00:00')
+		collect: #asDateAndTime) asDataSeries.
 	actual := detector detectColumnTypeAndConvert: column.
 	self assert: actual equals: expected
 ]
@@ -81,8 +85,12 @@ DataFrameTypeDetectorTest >> testDateAndTimeColumn [
 { #category : #tests }
 DataFrameTypeDetectorTest >> testDateAndTimeColumnWithNils [
 	| column expected actual |
-	column := #(nil '6 March 1996 2:30 am' '12 March 2019 14:24 am' nil) asDataSeries.
-	expected := { nil. '1996-03-06T02:30:00' asDateAndTime. '2019-03-12T14:24:00' asDateAndTime. nil} asDataSeries.
+	column := #(nil '6 March 1996 2:30 am' '12 March 2019 14:24 am' nil)
+		asDataSeries.
+	expected := {nil.
+	'1996-03-06T02:30:00' asDateAndTime.
+	'2019-03-12T14:24:00' asDateAndTime.
+	nil} asDataSeries.
 	actual := detector detectColumnTypeAndConvert: column.
 	self assert: actual equals: expected
 ]
@@ -161,7 +169,8 @@ DataFrameTypeDetectorTest >> testStringColumnWithNils [
 DataFrameTypeDetectorTest >> testTimeColumn [
 	| column expected actual |
 	column := #('1:10' '2:30' '14:24' '00:00') asDataSeries.
-	expected := (#('1:10 am' '2:30 am' '14:24 am' '00:00 am') collect: #asTime) asDataSeries.
+	expected := (#('1:10 am' '2:30 am' '14:24 am' '00:00 am')
+		collect: #asTime) asDataSeries.
 	actual := detector detectColumnTypeAndConvert: column.
 	self assert: actual equals: expected
 ]
@@ -170,7 +179,10 @@ DataFrameTypeDetectorTest >> testTimeColumn [
 DataFrameTypeDetectorTest >> testTimeColumnWithNils [
 	| column expected actual |
 	column := #('1:10' nil '14:24' nil) asDataSeries.
-	expected := {'1:10 am' asTime. nil. '14:24 am' asTime. nil} asDataSeries.
+	expected := {'1:10 am' asTime.
+	nil.
+	'14:24 am' asTime.
+	nil} asDataSeries.
 	actual := detector detectColumnTypeAndConvert: column.
 	self assert: actual equals: expected
 ]
