@@ -33,9 +33,11 @@ jobs:
         with:
            fetch-depth: 0
       - uses: mabdi/smallamp-action@main
+        name: Setup SmallAmp      
         with:
           action: setup
       - uses: mabdi/smallamp-action@main
+        name: Run SmallAmp      
         with:
           action: amplify
         env:
@@ -52,6 +54,7 @@ jobs:
         with:
            fetch-depth: 0
       - uses: mabdi/smallamp-action@main
+        name: Setup SmallAmp
         with:
           action: setup
       - name: Download artifacts
@@ -59,6 +62,7 @@ jobs:
         with:
           path: ${{ env.PHARO_HOME }}
       - uses: mabdi/smallamp-action@main
+        name: SmallAmp push changes
         with:
           action: push
           github-token: ${{secrets.GITHUB_TOKEN}}
