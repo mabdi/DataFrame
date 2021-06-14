@@ -34,11 +34,28 @@ DataFrameJsonWriterTest >> setUp [
 
 { #category : #tests }
 DataFrameJsonWriterTest >> testWriteAsString [
-	| actual expected |.
+	| actual expected |
 	actual := DataFrameJsonWriter new writeAsString: df.
-	expected := '' join: (TestJsonStrings recordsJsonString 
-		regex: '[^\s]+' matchesCollect: [:x|x]).
-	self assert: actual equals: expected.
+	expected := ''
+		join:
+			(TestJsonStrings recordsJsonString
+				regex: '[^\s]+'
+				matchesCollect: [ :x | x ]).
+	self assert: actual equals: expected
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameJsonWriterTest >> testWriteAsString_amp [
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrameJsonWriter#pretty#9#16'>
+	<madeBySmallAmp>
+	| actual expected aDataFrameJsonWriter |
+	aDataFrameJsonWriter := DataFrameJsonWriter new.
+	self
+		assert:
+			aDataFrameJsonWriter class equals: DataFrameJsonWriter;
+		assert:
+			aDataFrameJsonWriter orient equals: 'records'.
+	actual := aDataFrameJsonWriter writeAsString: df
 ]
 
 { #category : #tests }
@@ -47,9 +64,12 @@ DataFrameJsonWriterTest >> testWriteTo [
 	file := directory / 'output.json'.
 	DataFrameJsonWriter new write: df to: file.
 	actual := self readFile: file.
-	expected := '' join: (TestJsonStrings recordsJsonString 
-		regex: '[^\s]+' matchesCollect: [:x|x]).
-	self assert: actual lines equals: expected lines.
+	expected := ''
+		join:
+			(TestJsonStrings recordsJsonString
+				regex: '[^\s]+'
+				matchesCollect: [ :x | x ]).
+	self assert: actual lines equals: expected lines
 ]
 
 { #category : #tests }
@@ -58,9 +78,12 @@ DataFrameJsonWriterTest >> testWriteToJson [
 	file := directory / 'output.json'.
 	df writeToJson: file.
 	actual := self readFile: file.
-	expected := '' join: (TestJsonStrings recordsJsonString 
-		regex: '[^\s]+' matchesCollect: [:x|x]).
-	self assert: actual lines equals: expected lines.
+	expected := ''
+		join:
+			(TestJsonStrings recordsJsonString
+				regex: '[^\s]+'
+				matchesCollect: [ :x | x ]).
+	self assert: actual lines equals: expected lines
 ]
 
 { #category : #tests }
@@ -69,7 +92,10 @@ DataFrameJsonWriterTest >> testWriteToJsonOrient [
 	file := directory / 'output.json'.
 	df writeToJson: file orient: 'values'.
 	actual := self readFile: file.
-	expected := '' join: (TestJsonStrings valuesJsonString 
-		regex: '[^\s]+' matchesCollect: [:x|x]).
-	self assert: actual lines equals: expected lines.
+	expected := ''
+		join:
+			(TestJsonStrings valuesJsonString
+				regex: '[^\s]+'
+				matchesCollect: [ :x | x ]).
+	self assert: actual lines equals: expected lines
 ]

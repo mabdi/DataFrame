@@ -73,76 +73,109 @@ DataFrameJsonReaderTest >> sortByRowColNames: inputDf [
 { #category : #tests }
 DataFrameJsonReaderTest >> testReadFrom [
 	| output |
-
-	output := DataFrameJsonReader new readFrom: directory / 'nonNull1.json'.
-	
-	self assert: (self sortByRowColNames: output) equals: dfWithColNames.
+	output := DataFrameJsonReader new
+		readFrom: directory / 'nonNull1.json'.
+	self assert: (self sortByRowColNames: output) equals: dfWithColNames
 ]
 
 { #category : #tests }
 DataFrameJsonReaderTest >> testReadFromColumns [
 	| output |
-
 	output := DataFrameJsonReader new readFrom: directory / 'column.json'.
-	
-	self assert: (self sortByRowColNames: output) equals: dfWithRowColNames.
+	self
+		assert: (self sortByRowColNames: output)
+		equals: dfWithRowColNames
 ]
 
 { #category : #tests }
 DataFrameJsonReaderTest >> testReadFromIndex [
 	| output |
-
 	output := DataFrameJsonReader new readFrom: directory / 'index.json'.
-	
-	self assert: (self sortByRowColNames: output) equals: dfWithRowColNames transposed.
+	self
+		assert: (self sortByRowColNames: output)
+		equals: dfWithRowColNames transposed
 ]
 
 { #category : #tests }
 DataFrameJsonReaderTest >> testReadFromJson [
 	| output |
-	output := DataFrame readFromJson: (directory / 'nonNull1.json').
-	self assert: (self sortByRowColNames: output) equals: dfWithColNames.
+	output := DataFrame readFromJson: directory / 'nonNull1.json'.
+	self assert: (self sortByRowColNames: output) equals: dfWithColNames
 ]
 
 { #category : #tests }
 DataFrameJsonReaderTest >> testReadFromJsonOrient [
 	| output |
-	output := DataFrame readFromJson: (directory / 'split.json') orient: 'split'.
-	self assert: (self sortByRowColNames: output) equals: dfWithRowColNames.
+	output := DataFrame
+		readFromJson: directory / 'split.json'
+		orient: 'split'.
+	self
+		assert: (self sortByRowColNames: output)
+		equals: dfWithRowColNames
 ]
 
 { #category : #tests }
 DataFrameJsonReaderTest >> testReadFromRecords [
 	| output |
-
-	output := DataFrameJsonReader new readFrom: directory / 'records.json'.
-	
-	self assert: (self sortByRowColNames: output) equals: dfWithColNames.
+	output := DataFrameJsonReader new
+		readFrom: directory / 'records.json'.
+	self assert: (self sortByRowColNames: output) equals: dfWithColNames
 ]
 
 { #category : #tests }
 DataFrameJsonReaderTest >> testReadFromSplit [
 	| output |
-
 	output := DataFrameJsonReader new readFrom: directory / 'split.json'.
-	
-	self assert: (self sortByRowColNames: output) equals: dfWithRowColNames.
+	self
+		assert: (self sortByRowColNames: output)
+		equals: dfWithRowColNames
 ]
 
 { #category : #tests }
 DataFrameJsonReaderTest >> testReadFromString [
 	| output |
-
-	output := DataFrameJsonReader new readFrom: TestJsonStrings nonNullJsonString2.
-	
-	self assert: (self sortByRowColNames: output) equals: dfWithRowColNames.
+	output := DataFrameJsonReader new
+		readFrom: TestJsonStrings nonNullJsonString2.
+	self
+		assert: (self sortByRowColNames: output)
+		equals: dfWithRowColNames
 ]
 
 { #category : #tests }
 DataFrameJsonReaderTest >> testReadFromValues [
 	| output |
-
 	output := DataFrameJsonReader new readFrom: directory / 'values.json'.
-	
-	self assert: (self sortByRowColNames: output) equals: df.
+	self assert: (self sortByRowColNames: output) equals: df
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameJsonReaderTest >> testReadFrom_amp [
+	<smallAmpCoveres: 'RemoveCaretOperator#DataFrameJsonReader#uniform#10#18'>
+	<madeBySmallAmp>
+	| output aDataFrameJsonReader |
+	aDataFrameJsonReader := DataFrameJsonReader new.
+	self
+		assert:
+			aDataFrameJsonReader class equals: DataFrameJsonReader;
+		assert:
+			aDataFrameJsonReader orient equals: 'auto'.
+	output := aDataFrameJsonReader readFrom: directory / 'nonNull1.json'
+]
+
+{ #category : #'as yet unclassified' }
+DataFrameJsonReaderTest >> testReadFrom_amp_A0_A26 [
+	<smallAmpCoveres:
+		'ReplaceIfTrueReceiverWithTrueOperator#DataFrameJsonReader#read:#91#148'>
+	<madeBySmallAmp>
+	| output aDataFrameJsonReader |
+	aDataFrameJsonReader := DataFrameJsonReader new.
+	output := aDataFrameJsonReader
+		uniform;
+		orient: 'values';
+		readFrom: directory / 'nonNull1.json'.
+	self
+		assert:
+			aDataFrameJsonReader class equals: DataFrameJsonReader;
+		assert:
+			aDataFrameJsonReader orient equals: 'values'
 ]
